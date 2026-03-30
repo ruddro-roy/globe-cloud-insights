@@ -7,39 +7,72 @@
 [![Launch Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ruddro-roy/globe-cloud-insights/main)
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/ruddro-roy/globe-cloud-insights)
 
-**An interactive, research-quality data-visualization project exploring NASA citizen-science cloud observations from the GLOBE Observer Clouds 2022 Challenge.**
+**An interactive dashboard and data pipeline for exploring NASA citizen-science cloud observations from the GLOBE Observer Clouds 2022 Challenge.**
+
+> 42,700+ cloud observations from 89 countries, 7 continents, and 49,450 satellite matches — collected by citizen scientists and made explorable here.
+
+---
+
+## What Is This?
+
+During the [NASA GLOBE Cloud Challenge 2022](https://observer.globe.gov/do-globe-observer/challenges/cloudchallenge-2022) (January 15 – February 15, 2022), thousands of volunteers around the world looked up at the sky, identified cloud types, and submitted observations through the GLOBE Observer app. This project takes that dataset and turns it into an interactive, visual experience that anyone can explore — no coding required.
+
+### What Can You Do Here?
+
+- **Explore a live dashboard** showing cloud observations on a world map
+- **Filter by date, sky condition, and cloud type** to focus on what interests you
+- **See charts** of daily observation trends, sky condition breakdowns, and top contributing countries
+- **Download the data** as a CSV for classroom activities, homework, or your own research
+- **Learn** about cloud classification, citizen science, and how ground observations connect to satellite data
+
+### Who Is This For?
+
+| Audience | How to use it |
+| --- | --- |
+| **Students** | Explore the dashboard, download data for projects, learn cloud types from the glossary |
+| **Educators** | Use the dashboard in class, assign data exploration exercises, discuss citizen science |
+| **Researchers** | Reproduce the pipeline, run the notebooks, extend the analysis |
+| **Curious visitors** | Browse the map and charts to see how citizen science works at global scale |
 
 ---
 
 ## The Story Behind This Project
 
-Ever looked up at the sky and wondered what stories those clouds tell? Me too. Out of sheer curiosity, I spent May 5 - Oct 1, 2022 volunteering remotely with NASA's GLOBE Observer (Clouds) program. That experience, standing outside with a phone pointed at the sky, carefully identifying cloud genera while a satellite passed overhead, sparked this open-source project.
+Ever looked up at the sky and wondered what stories those clouds tell? Me too. Out of sheer curiosity, I spent May 5 – Oct 1, 2022 volunteering remotely with NASA's GLOBE Observer (Clouds) program. That experience — standing outside with a phone pointed at the sky, carefully identifying cloud genera while a satellite passed overhead — sparked this open-source project.
 
-The NASA GLOBE Cloud Challenge 2022 ran from January 15 to February 15, 2022, inviting citizen scientists around the world to observe and classify clouds. The response was remarkable: NASA reported over 42,700 cloud observations from 89 countries across all 7 continents, with more than 49,450 satellite matches (over double the 20,000 goal), 108,000+ new sky photographs, and 321,100+ CLOUD GAZE classifications.
+The response to the 2022 Cloud Challenge was remarkable: NASA reported over 42,700 cloud observations from 89 countries across all 7 continents, with more than 49,450 satellite matches (over double the 20,000 goal), 108,000+ new sky photographs, and 321,100+ CLOUD GAZE classifications.
 
-This project takes that rich dataset and makes it explorable, visual, and educational.
+This project makes that dataset explorable, visual, and educational.
 
-## Mission & Learning Goals
+---
 
-**Mission:** Make NASA citizen-science cloud data accessible, interactive, and pedagogically useful for educators, students, and researchers.
+## Dashboard Preview
 
-**What you'll learn:**
+The dashboard includes four main views, each designed to help you understand a different aspect of the data:
 
-- How citizen scientists contribute to real climate research
-- The basics of cloud classification (10 genera, sky conditions, opacity)
-- How ground-based observations compare with satellite measurements
-- Practical data science: API access, data cleaning, visualisation, and reproducibility
+| View | What it shows |
+| --- | --- |
+| **World Map** | Every observation plotted on a globe, with clusters showing hotspots of activity |
+| **Timeline** | Daily observation counts, revealing peaks on school days and organized events |
+| **Patterns & Distributions** | Sky condition breakdown (donut chart), cloud cover spread (histogram), top countries (bar chart) |
+| **Browse & Download** | Searchable table of raw observations with one-click CSV download |
 
-## Quick Start (90 Seconds)
+The dashboard uses plain-language labels, guided interpretation callouts, and sensible defaults so that first-time visitors can understand the data without any prior training.
 
-### Zero-install options
+*Run `streamlit run app/streamlit_app.py` to see it live, or launch instantly via Binder/Codespaces above.*
+
+---
+
+## Quick Start
+
+### No installation needed
 
 | Method | Link |
 | --- | --- |
-| **Binder** | [![Launch Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ruddro-roy/globe-cloud-insights/main) |
-| **Codespaces** | [![Open in Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/ruddro-roy/globe-cloud-insights) |
+| **Binder** (launches in browser) | [![Launch Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ruddro-roy/globe-cloud-insights/main) |
+| **GitHub Codespaces** | [![Open in Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/ruddro-roy/globe-cloud-insights) |
 
-### Local setup
+### Local setup (3 commands)
 
 ```bash
 git clone https://github.com/ruddro-roy/globe-cloud-insights.git
@@ -56,6 +89,33 @@ docker run -p 8501:8501 globe-cloud-insights
 # Open http://localhost:8501
 ```
 
+---
+
+## How the Data Pipeline Works
+
+```
+GLOBE API  ──>  Raw CSV  ──>  Quality Filters  ──>  Tidy Parquet  ──>  Dashboard
+                (cached)      - Valid coords         (analysis-ready)
+                              - Valid timestamps
+                              - Bounds checks
+```
+
+| Stage | Code | What it does |
+| --- | --- | --- |
+| **Fetch** | `src/globe_cloud_insights/fetch.py` | Downloads data from the GLOBE API in weekly chunks, with SHA-256 checksum caching |
+| **Clean** | `src/globe_cloud_insights/clean.py` | Normalizes columns, validates coordinates, derives cloud cover % from sky condition labels, exports Parquet |
+| **Analyze** | `src/globe_cloud_insights/analysis.py` | Descriptive statistics, temporal aggregation, spatial mapping, Plotly/Folium charts |
+| **Explore** | `app/streamlit_app.py` | Interactive Streamlit dashboard with filters, maps, charts, and data export |
+
+### Quality Filters Applied
+
+- Rows missing latitude or longitude: **dropped**
+- Coordinates outside [-90, 90] / [-180, 180]: **dropped**
+- Rows without timestamps: **dropped**
+- Cloud cover %: inferred from sky condition labels where missing (Clear = 0%, Few = 15%, Scattered = 40%, Broken = 70%, Overcast = 95%, Obscured = 100%)
+
+---
+
 ## Data Provenance
 
 ### Primary Source
@@ -65,7 +125,7 @@ All observation data comes from the **GLOBE Program**, accessed through the [GLO
 | Detail | Value |
 | --- | --- |
 | **Protocol** | [GLOBE Clouds (sky_conditions)](https://www.globe.gov/web/atmosphere/protocols/clouds) |
-| **Date range** | January 15 -- February 15, 2022 |
+| **Date range** | January 15 – February 15, 2022 |
 | **Campaign** | [NASA GLOBE Cloud Challenge 2022](https://observer.globe.gov/do-globe-observer/challenges/cloudchallenge-2022) |
 | **API endpoint** | `api.globe.gov/search/v1/measurement/protocol/measureddate` |
 | **Format** | GeoJSON (chunked weekly to respect the 1M-record API limit) |
@@ -74,58 +134,32 @@ All observation data comes from the **GLOBE Program**, accessed through the [GLO
 
 > Global Learning and Observations to Benefit the Environment (GLOBE) Program, *date data was accessed*, globe.gov
 
-### Licensing & Reuse
-
-GLOBE makes its data available to everyone and promotes full and open sharing for educational and scientific purposes. See [GLOBE Terms of Use](https://www.globe.gov).
-
 ### Ethics Note on Location Privacy
 
-Observation coordinates are publicly available through the GLOBE Program's open data policy. However, we encourage responsible use: avoid sensitive inference about individual observers, especially at high spatial resolution. Do not attempt to identify or contact participants from coordinate data.
+Observation coordinates are publicly available through the GLOBE Program's open data policy. However, we encourage responsible use: avoid sensitive inference about individual observers, especially at high spatial resolution.
 
-## Methods Overview
+---
 
-### Data Pipeline
+## Notebook Analysis
 
-```
-GLOBE API ──→ Raw CSV ──→ Quality Filters ──→ Tidy Parquet
-              (cached)     - Valid coords       (analysis-ready)
-                           - Valid timestamps
-                           - Bounds checks
-```
+For a deeper look at the data, two Jupyter notebooks walk through the full pipeline:
 
-1. **Fetch** (`src/globe_cloud_insights/fetch.py`): Chunked API retrieval with SHA-256 checksum caching
-2. **Clean** (`src/globe_cloud_insights/clean.py`): Column normalisation, coordinate validation, cloud-cover derivation from sky condition labels, and Parquet export
-3. **Analyse** (`src/globe_cloud_insights/analysis.py`): Descriptive statistics, temporal aggregation, spatial mapping, and Plotly/Folium visualisation
-4. **Explore** (`app/streamlit_app.py`): Interactive Streamlit dashboard with filters, maps, charts, and data export
+- `notebooks/01_fetch_and_clean.ipynb` — Reproducible data pipeline with provenance tracking
+- `notebooks/02_exploratory_analysis.ipynb` — Statistical summaries, spatial maps, temporal trends
 
-### Quality Filters
+---
 
-- Rows missing latitude or longitude: **dropped**
-- Coordinates outside [-90, 90] / [-180, 180]: **dropped**
-- Rows without timestamps: **dropped**
-- Cloud cover %: inferred from sky condition labels where missing (Clear=0%, Few=15%, Scattered=40%, Broken=70%, Overcast=95%, Obscured=100%)
+## Documentation
 
-## Showcase Gallery
+- **[Glossary](docs/glossary.md)** — Cloud genera, sky conditions, opacity levels, and other key terms
+- **[Tutorial](docs/tutorial.md)** — Step-by-step guide to setup, exploration, and analysis
+- **[Data Schema](data/README.md)** — Column definitions, quality filters, and provenance details
 
-### Interactive Dashboard
-The Streamlit dashboard offers four exploration tabs:
-
-- **Map** --- Clustered Folium map of global observations
-- **Temporal** --- Daily observation bar chart revealing engagement patterns
-- **Distributions** --- Sky condition pie chart, cloud cover histogram, top countries
-- **Data Table** --- Filterable, downloadable view of raw observations
-
-*Run `streamlit run app/streamlit_app.py` to see it live, or launch via Binder/Codespaces above.*
-
-### Notebook Analysis
-- `notebooks/01_fetch_and_clean.ipynb` --- Reproducible data pipeline with provenance
-- `notebooks/02_exploratory_analysis.ipynb` --- Statistical summaries, spatial maps, temporal trends
-
+---
 
 ## Contributing
 
-We welcome contributions
-See [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines.
+We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines.
 
 **Quick version:**
 
@@ -134,6 +168,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines.
 3. Make changes and add tests
 4. Run `black`, `isort`, `flake8`, `mypy`, `pytest`
 5. Open a pull request
+
+---
 
 ## Citation & Acknowledgments
 
@@ -155,26 +191,26 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines.
 
 - **NASA GLOBE Program** for making citizen-science data openly available
 - **GLOBE Observer** volunteers who contributed 42,700+ cloud observations
-- **Researchers:** Colón Robles et al. (2020), Dodson et al. (2022) for foundational work on GLOBE Observer data quality and intense observation periods
+- **Researchers:** Colon Robles et al. (2020), Dodson et al. (2022) for foundational work on GLOBE Observer data quality and intense observation periods
 
 ### Key References
 
-1. NASA GLOBE Cloud Challenge 2022 --- https://observer.globe.gov/do-globe-observer/challenges/cloudchallenge-2022
-2. GLOBE Clouds Protocol --- https://www.globe.gov/web/atmosphere/protocols/clouds
-3. NASA: Clouds in a Changing Climate --- https://science.nasa.gov/science-research/earth-science/clouds-in-a-changing-climate/
-4. GLOBE Data Access --- https://observer.globe.gov/get-data
-5. GLOBE API --- https://www.globe.gov/globe-data/globe-api
-6. Colón Robles et al. (2020). GLOBE Observer Data: 2016--2019. *Earth and Space Science*, 7(8). [doi:10.1029/2020EA001175](https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2020EA001175)
+1. NASA GLOBE Cloud Challenge 2022 — https://observer.globe.gov/do-globe-observer/challenges/cloudchallenge-2022
+2. GLOBE Clouds Protocol — https://www.globe.gov/web/atmosphere/protocols/clouds
+3. NASA: Clouds in a Changing Climate — https://science.nasa.gov/science-research/earth-science/clouds-in-a-changing-climate/
+4. GLOBE Data Access — https://observer.globe.gov/get-data
+5. GLOBE API — https://www.globe.gov/globe-data/globe-api
+6. Colon Robles et al. (2020). GLOBE Observer Data: 2016-2019. *Earth and Space Science*, 7(8). [doi:10.1029/2020EA001175](https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2020EA001175)
 7. Dodson et al. (2022). Intense Observation Periods. *Earth and Space Science*, 9(3). [doi:10.1029/2021EA002058](https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2021EA002058)
-8. NASA Technical Report on GLOBE-SCC --- https://ntrs.nasa.gov/api/citations/20230006162/downloads/GLOBE-SCC_paper-rev-v4.pdf
+8. NASA Technical Report on GLOBE-SCC — https://ntrs.nasa.gov/api/citations/20230006162/downloads/GLOBE-SCC_paper-rev-v4.pdf
+
+---
 
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
 
-You are free to use, modify, and distribute this work. If you use the GLOBE
-data in your own projects, please credit the GLOBE Program per their
-citation guidance above.
+You are free to use, modify, and distribute this work. If you use the GLOBE data in your own projects, please credit the GLOBE Program per their citation guidance above.
 
 ## Roadmap
 

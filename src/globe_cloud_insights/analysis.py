@@ -12,6 +12,38 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
+# ── Shared colour palette ────────────────────────────────────────────────────
+
+_BLUE = "#3b82f6"
+_BLUE_LIGHT = "#93c5fd"
+_GREEN = "#10b981"
+_ORANGE = "#f59e0b"
+_SKY_PALETTE = [
+    "#60a5fa",  # light blue
+    "#38bdf8",  # sky
+    "#818cf8",  # indigo
+    "#a78bfa",  # violet
+    "#f472b6",  # pink
+    "#fb923c",  # orange
+    "#34d399",  # emerald
+]
+
+_LAYOUT_DEFAULTS: dict[str, Any] = dict(
+    template="plotly_white",
+    font=dict(family="Inter, -apple-system, sans-serif", size=13),
+    title_font=dict(size=16, color="#1e293b"),
+    paper_bgcolor="rgba(0,0,0,0)",
+    plot_bgcolor="rgba(0,0,0,0)",
+    margin=dict(l=40, r=20, t=50, b=40),
+)
+
+
+def _apply_layout(fig: go.Figure, **overrides: Any) -> go.Figure:
+    """Apply shared layout defaults to a Plotly figure."""
+    fig.update_layout(**{**_LAYOUT_DEFAULTS, **overrides})
+    return fig
+
+
 # ── Descriptive statistics ───────────────────────────────────────────────────
 
 
@@ -60,25 +92,21 @@ def plot_daily_counts(counts_df: pd.DataFrame) -> go.Figure:
         counts_df,
         x="date",
         y="count",
-        title="Daily GLOBE Cloud Observations (2022 Challenge)",
         labels={"date": "Date", "count": "Observations"},
-        color_discrete_sequence=["#1f77b4"],
+        color_discrete_sequence=[_BLUE],
     )
-    fig.update_layout(
+    fig.update_traces(
+        marker_line_width=0,
+        marker_cornerradius=3,
+        opacity=0.9,
+    )
+    _apply_layout(
+        fig,
+        title="Daily Cloud Observations",
         xaxis_title="Date",
         yaxis_title="Number of Observations",
-        template="plotly_white",
-        annotations=[
-            dict(
-                text="Data: GLOBE Program, globe.gov",
-                xref="paper",
-                yref="paper",
-                x=1,
-                y=-0.15,
-                showarrow=False,
-                font=dict(size=10, color="gray"),
-            )
-        ],
+        xaxis=dict(gridcolor="#f1f5f9"),
+        yaxis=dict(gridcolor="#f1f5f9"),
     )
     return fig
 
@@ -97,26 +125,26 @@ def sky_condition_distribution(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def plot_sky_conditions(dist_df: pd.DataFrame) -> go.Figure:
-    """Plotly pie chart of sky-condition distribution."""
-    fig = px.pie(
-        dist_df,
-        names="sky_condition",
-        values="count",
-        title="Sky Condition Distribution",
-        color_discrete_sequence=px.colors.qualitative.Pastel,
+    """Plotly donut chart of sky-condition distribution."""
+    fig = go.Figure(
+        go.Pie(
+            labels=dist_df["sky_condition"],
+            values=dist_df["count"],
+            hole=0.45,
+            marker=dict(colors=_SKY_PALETTE, line=dict(color="#fff", width=2)),
+            textinfo="label+percent",
+            textfont=dict(size=12),
+            hovertemplate=(
+                "<b>%{label}</b><br>"
+                "%{value:,} observations (%{percent})<extra></extra>"
+            ),
+        )
     )
-    fig.update_layout(
-        annotations=[
-            dict(
-                text="Data: GLOBE Program, globe.gov",
-                xref="paper",
-                yref="paper",
-                x=1,
-                y=-0.1,
-                showarrow=False,
-                font=dict(size=10, color="gray"),
-            )
-        ]
+    _apply_layout(
+        fig,
+        title="Sky Conditions",
+        showlegend=False,
+        margin=dict(l=20, r=20, t=50, b=20),
     )
     return fig
 
@@ -135,29 +163,28 @@ def top_countries(df: pd.DataFrame, n: int = 15) -> pd.DataFrame:
 
 def plot_top_countries(countries_df: pd.DataFrame) -> go.Figure:
     """Horizontal bar chart of top-contributing countries."""
-    fig = px.bar(
-        countries_df.sort_values("count"),
-        x="count",
-        y="country_name",
-        orientation="h",
-        title="Top Contributing Countries",
-        labels={"count": "Observations", "country_name": "Country"},
-        color_discrete_sequence=["#2ca02c"],
+    sorted_df = countries_df.sort_values("count")
+    fig = go.Figure(
+        go.Bar(
+            x=sorted_df["count"],
+            y=sorted_df["country_name"],
+            orientation="h",
+            marker=dict(
+                color=sorted_df["count"],
+                colorscale=[[0, _BLUE_LIGHT], [1, _BLUE]],
+                line=dict(width=0),
+                cornerradius=3,
+            ),
+            hovertemplate=("<b>%{y}</b><br>%{x:,} observations<extra></extra>"),
+        )
     )
-    fig.update_layout(
-        template="plotly_white",
+    _apply_layout(
+        fig,
+        title="Top Contributing Countries",
+        xaxis_title="Observations",
         yaxis_title="",
-        annotations=[
-            dict(
-                text="Data: GLOBE Program, globe.gov",
-                xref="paper",
-                yref="paper",
-                x=1,
-                y=-0.15,
-                showarrow=False,
-                font=dict(size=10, color="gray"),
-            )
-        ],
+        yaxis=dict(gridcolor="#f1f5f9"),
+        xaxis=dict(gridcolor="#f1f5f9"),
     )
     return fig
 
@@ -198,10 +225,12 @@ def create_observation_map(
             )
             folium.CircleMarker(
                 location=[float(lat), float(lon)],
-                radius=3,
-                color="#1f77b4",
+                radius=4,
+                color="#3b82f6",
                 fill=True,
-                fill_opacity=0.6,
+                fill_color="#60a5fa",
+                fill_opacity=0.7,
+                weight=1,
                 popup=popup_text,
             ).add_to(cluster)
     cluster.add_to(m)
@@ -214,24 +243,20 @@ def plot_cloud_cover_histogram(df: pd.DataFrame) -> go.Figure:
         df.dropna(subset=["cloud_cover_pct"]),
         x="cloud_cover_pct",
         nbins=20,
-        title="Cloud Cover Distribution",
         labels={"cloud_cover_pct": "Cloud Cover (%)"},
-        color_discrete_sequence=["#ff7f0e"],
+        color_discrete_sequence=[_ORANGE],
     )
-    fig.update_layout(
-        template="plotly_white",
+    fig.update_traces(
+        marker_line_width=0,
+        marker_cornerradius=3,
+        opacity=0.9,
+    )
+    _apply_layout(
+        fig,
+        title="Cloud Cover Distribution",
         xaxis_title="Cloud Cover (%)",
         yaxis_title="Frequency",
-        annotations=[
-            dict(
-                text="Data: GLOBE Program, globe.gov",
-                xref="paper",
-                yref="paper",
-                x=1,
-                y=-0.15,
-                showarrow=False,
-                font=dict(size=10, color="gray"),
-            )
-        ],
+        xaxis=dict(gridcolor="#f1f5f9"),
+        yaxis=dict(gridcolor="#f1f5f9"),
     )
     return fig
