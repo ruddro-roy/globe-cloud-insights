@@ -21,8 +21,10 @@ from streamlit_folium import st_folium
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from globe_cloud_insights.analysis import (  # noqa: E402
+    analyze_cloud_cover_by_latitude,
     daily_observation_counts,
     plot_cloud_cover_histogram,
+    plot_cloud_cover_vs_latitude,
     plot_daily_counts,
     plot_sky_conditions,
     plot_top_countries,
@@ -470,11 +472,12 @@ def main():
     st.markdown("")  # spacing
 
     # ── Tabs ─────────────────────────────────────────────────────────────
-    tab_map, tab_temporal, tab_dist, tab_table = st.tabs(
+    tab_map, tab_temporal, tab_dist, tab_analysis, tab_table = st.tabs(
         [
             "World Map",
             "Timeline",
             "Patterns & Distributions",
+            "Analysis",
             "Browse & Download",
         ]
     )
@@ -625,6 +628,45 @@ def main():
             "</div>",
             unsafe_allow_html=True,
         )
+
+    # ── Analysis tab ─────────────────────────────────────────────────────
+    with tab_analysis:
+        st.markdown(
+            '<p class="section-heading">Does Distance from Equator Affect Cloud Cover?</p>',
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            '<p class="section-help">'
+            "Here we perform a simple inferential statistical analysis to determine if "
+            "there is a significant correlation between a location's absolute latitude "
+            "(distance from the equator) and its reported cloud cover."
+            "</p>",
+            unsafe_allow_html=True,
+        )
+
+        analysis_results = analyze_cloud_cover_by_latitude(df)
+        
+        if "error" in analysis_results:
+            st.info(f"Analysis could not be performed: {analysis_results['error']}")
+        else:
+            col_a, col_b, col_c = st.columns(3)
+            col_a.metric("Pearson Correlation", f"{analysis_results['pearson_correlation']:.3f}")
+            col_b.metric("Sample Size", f"{analysis_results['n_samples']:,}")
+            
+            st.markdown("#### Cloud Cover vs Absolute Latitude")
+            fig4 = plot_cloud_cover_vs_latitude(df)
+            st.plotly_chart(fig4, use_container_width=True)
+            
+            st.markdown(
+                '<div class="insight-box">'
+                "<strong>Statistical Insight:</strong> "
+                "A correlation close to 0 indicates little to no linear relationship. "
+                "A negative correlation would suggest that as distance from the equator increases, "
+                "cloud cover tends to decrease. This simple analysis pushes our exploration from "
+                "descriptive statistics toward inferential data science."
+                "</div>",
+                unsafe_allow_html=True,
+            )
 
     # ── Data table tab ───────────────────────────────────────────────────
     with tab_table:

@@ -260,3 +260,54 @@ def plot_cloud_cover_histogram(df: pd.DataFrame) -> go.Figure:
         yaxis=dict(gridcolor="#f1f5f9"),
     )
     return fig
+
+
+# ── Inferential statistics ───────────────────────────────────────────────────
+
+
+def analyze_cloud_cover_by_latitude(df: pd.DataFrame) -> dict[str, Any]:
+    """Correlate cloud cover with absolute latitude."""
+    if "latitude" not in df.columns or "cloud_cover_pct" not in df.columns:
+        return {"error": "Missing required columns"}
+
+    tmp = df.dropna(subset=["latitude", "cloud_cover_pct"]).copy()
+    if len(tmp) < 2:
+        return {"error": "Insufficient data"}
+
+    tmp["abs_latitude"] = tmp["latitude"].abs()
+    correlation = tmp["abs_latitude"].corr(tmp["cloud_cover_pct"])
+
+    return {
+        "pearson_correlation": float(correlation),
+        "n_samples": len(tmp),
+    }
+
+
+def plot_cloud_cover_vs_latitude(df: pd.DataFrame) -> go.Figure:
+    """Scatter plot of cloud cover vs absolute latitude, sampled for performance."""
+    if "latitude" not in df.columns or "cloud_cover_pct" not in df.columns:
+        return go.Figure()
+
+    tmp = df.dropna(subset=["latitude", "cloud_cover_pct"]).copy()
+    tmp["abs_latitude"] = tmp["latitude"].abs()
+
+    if len(tmp) > 5000:
+        tmp = tmp.sample(5000, random_state=42)
+
+    fig = px.scatter(
+        tmp,
+        x="abs_latitude",
+        y="cloud_cover_pct",
+        opacity=0.3,
+        color_discrete_sequence=[_BLUE],
+    )
+
+    _apply_layout(
+        fig,
+        title="Cloud Cover vs. Distance from Equator",
+        xaxis_title="Absolute Latitude (degrees)",
+        yaxis_title="Cloud Cover (%)",
+        xaxis=dict(gridcolor="#f1f5f9"),
+        yaxis=dict(gridcolor="#f1f5f9"),
+    )
+    return fig
