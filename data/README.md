@@ -10,15 +10,23 @@ This directory contains raw and processed datasets for the GLOBE Cloud Insights 
 
 **GLOBE data policy:** GLOBE makes its data available to everyone and promotes full and open sharing of its data for educational and scientific purposes.
 
+## Sample Dataset
+
+A 500-row sample is committed to this repository so that first-time visitors
+can explore the dashboard, run the notebooks, and execute the tests without
+needing API access or any data download step. The sample is representative of
+the full GLOBE Cloud Challenge 2022 dataset and covers all sky conditions,
+multiple countries, and the full challenge date range.
+
 ## Directory Structure
 
 ```
 data/
 ├── raw/                        # Raw data as retrieved from the GLOBE API
-│   ├── globe_clouds_2022.csv   # Raw CSV download (git-ignored)
+│   ├── globe_clouds_2022.csv   # 500-row sample (committed)
 │   └── .gitkeep
 ├── processed/                  # Cleaned, analysis-ready outputs
-│   ├── globe_clouds_2022_clean.parquet  # Tidy Parquet (git-ignored)
+│   ├── globe_clouds_2022_clean.parquet  # Cleaned sample (committed)
 │   └── .gitkeep
 └── README.md                   # This file
 ```
