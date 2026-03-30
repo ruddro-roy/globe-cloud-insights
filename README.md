@@ -71,6 +71,10 @@ pip install -e ".[dev,notebooks]"
 streamlit run app/streamlit_app.py
 ```
 
+> **No API key or data download needed.** A 500-row sample dataset is committed
+> to the repository, so the dashboard, notebooks, and tests work out of the box
+> for first-time visitors.
+
 ### Docker
 
 ```bash
@@ -94,7 +98,7 @@ GLOBE API  ──>  Raw CSV  ──>  Quality Filters  ──>  Tidy Parquet  �
 | --- | --- | --- |
 | **Fetch** | `src/globe_cloud_insights/fetch.py` | Downloads data from the GLOBE API in weekly chunks, with SHA-256 checksum caching |
 | **Clean** | `src/globe_cloud_insights/clean.py` | Normalizes columns, validates coordinates, derives cloud cover % from sky condition labels, exports Parquet |
-| **Analyze** | `src/globe_cloud_insights/analysis.py` | Descriptive statistics, temporal aggregation, spatial mapping, Plotly/Folium charts |
+| **Analyze** | `src/globe_cloud_insights/analysis.py` | Descriptive and inferential statistics, temporal aggregation, spatial mapping, Plotly/Folium charts |
 | **Explore** | `app/streamlit_app.py` | Interactive Streamlit dashboard with filters, maps, charts, and data export |
 
 ### Quality Filters Applied
@@ -132,10 +136,12 @@ Observation coordinates are publicly available through the GLOBE Program's open 
 
 ## Notebook Analysis
 
-For a deeper look at the data, two Jupyter notebooks walk through the full pipeline:
+For a deeper look at the data, two Jupyter notebooks walk through the full pipeline.
+Both notebooks are pre-executed with saved outputs so they render immediately on
+GitHub and nbviewer — no local setup required.
 
 - [**01_fetch_and_clean.ipynb**](https://nbviewer.org/github/ruddro-roy/globe-cloud-insights/blob/main/notebooks/01_fetch_and_clean.ipynb) — Reproducible data pipeline with provenance tracking
-- [**02_exploratory_analysis.ipynb**](https://nbviewer.org/github/ruddro-roy/globe-cloud-insights/blob/main/notebooks/02_exploratory_analysis.ipynb) — Statistical summaries, spatial maps, temporal trends
+- [**02_exploratory_analysis.ipynb**](https://nbviewer.org/github/ruddro-roy/globe-cloud-insights/blob/main/notebooks/02_exploratory_analysis.ipynb) — Descriptive summaries, spatial maps, temporal trends, and inferential statistics (Pearson correlation, chi-square goodness-of-fit, Kruskal–Wallis test)
 
 ---
 
