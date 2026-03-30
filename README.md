@@ -13,7 +13,7 @@
 
 ## The Story Behind This Project
 
-Ever looked up at the sky and wondered what stories those clouds tell? Me too. Out of sheer curiosity, I spent May 5 -- Oct 1, 2022 volunteering remotely with NASA's GLOBE Observer (Clouds) program. That experience --- standing outside with a phone pointed at the sky, carefully identifying cloud genera while a satellite passed overhead --- sparked this open-source project.
+Ever looked up at the sky and wondered what stories those clouds tell? Me too. Out of sheer curiosity, I spent May 5 - Oct 1, 2022 volunteering remotely with NASA's GLOBE Observer (Clouds) program. That experience, standing outside with a phone pointed at the sky, carefully identifying cloud genera while a satellite passed overhead, sparked this open-source project.
 
 The NASA GLOBE Cloud Challenge 2022 ran from January 15 to February 15, 2022, inviting citizen scientists around the world to observe and classify clouds. The response was remarkable: NASA reported over 42,700 cloud observations from 89 countries across all 7 continents, with more than 49,450 satellite matches (over double the 20,000 goal), 108,000+ new sky photographs, and 321,100+ CLOUD GAZE classifications.
 
@@ -121,55 +121,10 @@ The Streamlit dashboard offers four exploration tabs:
 - `notebooks/01_fetch_and_clean.ipynb` --- Reproducible data pipeline with provenance
 - `notebooks/02_exploratory_analysis.ipynb` --- Statistical summaries, spatial maps, temporal trends
 
-## Project Structure
-
-```
-globe-cloud-insights/
-├── README.md                    # You are here
-├── LICENSE                      # MIT License
-├── pyproject.toml               # Package metadata and tool config
-├── requirements.txt             # Pip dependencies
-├── CONTRIBUTING.md              # Contribution guidelines
-├── .pre-commit-config.yaml      # Code quality hooks
-├── Dockerfile                   # Container build
-├── .github/
-│   ├── workflows/ci.yml         # CI pipeline (lint, test, docs, app check)
-│   └── ISSUE_TEMPLATE/          # Bug report and feature request templates
-├── .devcontainer/
-│   └── devcontainer.json        # GitHub Codespaces / VS Code devcontainer
-├── binder/
-│   ├── environment.yml          # Binder environment specification
-│   └── postBuild                # Post-build setup script
-├── src/globe_cloud_insights/
-│   ├── __init__.py              # Package root
-│   ├── config.py                # Paths, API config, taxonomy constants
-│   ├── fetch.py                 # Data acquisition with caching
-│   ├── clean.py                 # Cleaning pipeline with provenance
-│   └── analysis.py              # Analysis and visualisation helpers
-├── app/
-│   └── streamlit_app.py         # Interactive Streamlit dashboard
-├── notebooks/
-│   ├── 01_fetch_and_clean.ipynb # Data pipeline walkthrough
-│   └── 02_exploratory_analysis.ipynb  # Exploratory analysis
-├── data/
-│   ├── README.md                # Data provenance and schema docs
-│   ├── raw/                     # Raw API downloads (git-ignored)
-│   └── processed/               # Cleaned Parquet (git-ignored)
-├── docs/
-│   ├── glossary.md              # Cloud-observation terminology
-│   └── tutorial.md              # Getting started guide
-└── tests/
-    ├── conftest.py              # Shared fixtures
-    ├── test_config.py           # Config module tests
-    ├── test_fetch.py            # Data fetch tests
-    ├── test_clean.py            # Cleaning pipeline tests
-    ├── test_analysis.py         # Analysis function tests
-    └── test_app.py              # Dashboard smoke tests
-```
 
 ## Contributing
 
-We welcome contributions from educators, students, researchers, and developers!
+We welcome contributions
 See [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines.
 
 **Quick version:**
@@ -230,7 +185,3 @@ citation guidance above.
 - [ ] Deploy the dashboard to Streamlit Community Cloud
 - [ ] Create classroom-ready lesson plans and worksheets
 - [ ] Add multilingual support for broader global access
-
----
-
-*Let's make open science cloud-native and sky-high!*
