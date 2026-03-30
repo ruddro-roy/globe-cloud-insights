@@ -66,9 +66,4 @@ When working with GLOBE observation data:
 
 - **Privacy:** Do not attempt to identify individual observers from coordinate data
 - **Attribution:** Always cite the GLOBE Program when using or redistributing data
-- **Accuracy:** Document any assumptions or limitations in your analysis
 
-## Code of Conduct
-
-Be kind, respectful, and constructive. This is an educational project — we
-encourage questions and are happy to mentor new contributors.
