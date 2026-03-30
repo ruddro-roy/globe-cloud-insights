@@ -632,7 +632,8 @@ def main():
     # ── Analysis tab ─────────────────────────────────────────────────────
     with tab_analysis:
         st.markdown(
-            '<p class="section-heading">Does Distance from Equator Affect Cloud Cover?</p>',
+            '<p class="section-heading">Does Distance from '
+            "Equator Affect Cloud Cover?</p>",
             unsafe_allow_html=True,
         )
         st.markdown(
@@ -645,25 +646,28 @@ def main():
         )
 
         analysis_results = analyze_cloud_cover_by_latitude(df)
-        
+
         if "error" in analysis_results:
             st.info(f"Analysis could not be performed: {analysis_results['error']}")
         else:
             col_a, col_b, col_c = st.columns(3)
-            col_a.metric("Pearson Correlation", f"{analysis_results['pearson_correlation']:.3f}")
+            col_a.metric(
+                "Pearson Correlation", f"{analysis_results['pearson_correlation']:.3f}"
+            )
             col_b.metric("Sample Size", f"{analysis_results['n_samples']:,}")
-            
+
             st.markdown("#### Cloud Cover vs Absolute Latitude")
             fig4 = plot_cloud_cover_vs_latitude(df)
             st.plotly_chart(fig4, use_container_width=True)
-            
+
             st.markdown(
                 '<div class="insight-box">'
                 "<strong>Statistical Insight:</strong> "
                 "A correlation close to 0 indicates little to no linear relationship. "
-                "A negative correlation would suggest that as distance from the equator increases, "
-                "cloud cover tends to decrease. This simple analysis pushes our exploration from "
-                "descriptive statistics toward inferential data science."
+                "A negative correlation would suggest that as distance from "
+                "the equator increases, cloud cover tends to decrease. "
+                "This simple analysis pushes our exploration from descriptive "
+                "statistics toward inferential data science."
                 "</div>",
                 unsafe_allow_html=True,
             )
