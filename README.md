@@ -25,16 +25,6 @@ During the [NASA GLOBE Cloud Challenge 2022](https://observer.globe.gov/do-globe
 - **Download the data** as a CSV for classroom activities, homework, or your own research
 - **Learn** about cloud classification, citizen science, and how ground observations connect to satellite data
 
-### Who Is This For?
-
-| Audience | How to use it |
-| --- | --- |
-| **Students** | Explore the dashboard, download data for projects, learn cloud types from the glossary |
-| **Educators** | Use the dashboard in class, assign data exploration exercises, discuss citizen science |
-| **Researchers** | Reproduce the pipeline, run the notebooks, extend the analysis |
-| **Curious visitors** | Browse the map and charts to see how citizen science works at global scale |
-
----
 
 ## The Story Behind This Project
 
