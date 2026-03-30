@@ -72,8 +72,3 @@ When working with GLOBE observation data:
 
 Be kind, respectful, and constructive. This is an educational project — we
 encourage questions and are happy to mentor new contributors.
-
-## Questions?
-
-Open a [discussion](https://github.com/ruddro-roy/globe-cloud-insights/discussions)
-or reach out through an issue. We're glad you're here!
