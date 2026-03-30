@@ -134,8 +134,8 @@ Observation coordinates are publicly available through the GLOBE Program's open 
 
 For a deeper look at the data, two Jupyter notebooks walk through the full pipeline:
 
-- `notebooks/01_fetch_and_clean.ipynb` — Reproducible data pipeline with provenance tracking
-- `notebooks/02_exploratory_analysis.ipynb` — Statistical summaries, spatial maps, temporal trends
+- [**01_fetch_and_clean.ipynb**](https://nbviewer.org/github/ruddro-roy/globe-cloud-insights/blob/main/notebooks/01_fetch_and_clean.ipynb) — Reproducible data pipeline with provenance tracking
+- [**02_exploratory_analysis.ipynb**](https://nbviewer.org/github/ruddro-roy/globe-cloud-insights/blob/main/notebooks/02_exploratory_analysis.ipynb) — Statistical summaries, spatial maps, temporal trends
 
 ---
 
