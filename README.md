@@ -9,6 +9,8 @@
 
 **An interactive dashboard and data pipeline for exploring NASA citizen-science cloud observations from the GLOBE Observer Clouds 2022 Challenge.**
 
+**Companion site:** [ruddro-roy.github.io/globe-cloud-insights](https://ruddro-roy.github.io/globe-cloud-insights/) — a publication-style overview of the dashboard, the data pipeline, and the bundled sample.
+
 > 42,700+ cloud observations from 89 countries, 7 continents, and 49,450 satellite matches — collected by citizen scientists and made explorable here.
 
 ---
