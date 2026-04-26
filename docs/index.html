@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GLOBE Cloud Insights — A Companion to NASA's 2022 Citizen-Science Cloud Record</title>
+<meta name="description" content="A documentation companion to GLOBE Cloud Insights: an interactive dashboard and reproducible data pipeline for NASA's GLOBE Observer Clouds 2022 Challenge, covering 42,700 observations from 89 countries.">
+<meta name="theme-color" content="#f6efe2">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="meta">
+      <span>Citizen-Science Atmospheric Record &nbsp;·&nbsp; Volume 2022 &nbsp;·&nbsp; Companion Edition</span>
+      <span>NASA GLOBE Observer &nbsp;·&nbsp; Cloud Challenge 2022</span>
+    </div>
+    <h1>GLOBE Cloud Insights</h1>
+    <p class="deck">An interactive dashboard and reproducible data pipeline for the NASA GLOBE Observer Clouds 2022 Challenge, drawing on more than forty-two thousand cloud observations contributed by volunteers across eighty-nine countries.</p>
+    <div class="byline">
+      <strong>Repository</strong> &nbsp;·&nbsp; <a href="https://github.com/ruddro-roy/globe-cloud-insights">ruddro-roy / globe-cloud-insights</a>
+      &nbsp;·&nbsp; <strong>License</strong> MIT
+      &nbsp;·&nbsp; <strong>Data source</strong> <a href="https://www.globe.gov/globe-data/globe-api">GLOBE API</a>, sky_conditions protocol
+      &nbsp;·&nbsp; <strong>Window</strong> 15 January – 15 February 2022
+    </div>
+    <nav class="contents" aria-label="Contents">
+      <a href="#overview"><span class="num">I</span>Overview</a>
+      <a href="#dashboard"><span class="num">II</span>Dashboard Views</a>
+      <a href="#findings"><span class="num">III</span>Findings &amp; Charts</a>
+      <a href="#pipeline"><span class="num">IV</span>Pipeline &amp; Data</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ============== I. OVERVIEW ============== -->
+<section id="overview">
+  <div class="wrap">
+    <h2><span class="num">Section I</span>Overview</h2>
+    <p class="lede">A complete, citable record of citizen-science cloud observations made readable, mappable, and downloadable, with every quality filter and provenance step documented in code.</p>
+
+    <p>Between 15 January and 15 February 2022, volunteers around the world recorded what they saw above them through the <a href="https://observer.globe.gov/do-globe-observer/challenges/cloudchallenge-2022">NASA GLOBE Observer Cloud Challenge</a>. They identified cloud genera, estimated cloud cover, and submitted timestamped, geolocated observations from every continent. This repository takes the resulting record and turns it into an interactive dashboard, a reproducible Python pipeline, and a small open dataset that anyone can study, teach with, or extend.</p>
+
+    <div class="lockup" aria-label="Headline statistics from the 2022 Challenge">
+      <div class="cell">
+        <div class="label">Observations</div>
+        <div class="value">42,700<span class="unit">&nbsp;cloud reports</span></div>
+        <div class="note">Reported across the 32-day campaign window</div>
+      </div>
+      <div class="cell">
+        <div class="label">Countries</div>
+        <div class="value">89<span class="unit">&nbsp;nations</span></div>
+        <div class="note">Spanning all seven continents</div>
+      </div>
+      <div class="cell">
+        <div class="label">Satellite matches</div>
+        <div class="value">49,450<span class="unit">&nbsp;coincidences</span></div>
+        <div class="note">More than double the campaign goal of twenty thousand</div>
+      </div>
+      <div class="cell">
+        <div class="label">Sky photographs</div>
+        <div class="value">108,000<span class="unit">+ images</span></div>
+        <div class="note">With 321,100 CLOUD GAZE classifications submitted</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="label">A note on the bundled sample</div>
+      <p>To keep the repository light and to ensure the dashboard runs immediately for any first-time visitor, a 500-row sample of the campaign record is committed to <code>data/raw/</code>. The figures in <em>Section III</em> labelled <em>Sample</em> are computed from that file. The pipeline in <em>Section IV</em> downloads the full record on demand, with checksum-cached weekly chunks.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============== II. DASHBOARD ============== -->
+<section id="dashboard">
+  <div class="wrap">
+    <h2><span class="num">Section II</span>Dashboard Views</h2>
+    <p class="lede">Four panels, each tuned to one question a reader might bring to the data.</p>
+
+    <div class="cols-2">
+      <div>
+        <h3>World Map</h3>
+        <p>Every observation is plotted on an interactive globe. Points cluster automatically into hotspots so that a single overcast morning in Bavaria does not crowd out a thinner record from Patagonia. Hovering surfaces the timestamp, the reported sky condition, and the dominant cloud genus.</p>
+
+        <h3>Timeline</h3>
+        <p>Daily counts of submissions across the thirty-two-day campaign. Peaks correspond to school days and to organized events; valleys correspond to weekends and to cloud-free deserts. The timeline reads like a heartbeat of the volunteer network.</p>
+
+        <h3>Patterns &amp; Distributions</h3>
+        <p>Three small multiples sit beside each other: a donut of sky conditions, a histogram of cloud cover percentages, and a bar of the most active contributing countries. The donut uses a fixed warm palette so that the same condition keeps the same colour across every view.</p>
+
+        <h3>Browse &amp; Download</h3>
+        <p>A searchable, sortable table of raw observations, with one-click export to CSV. The download preserves the full schema documented in <code>data/README.md</code>, including the derived cloud-cover percentage and the rule used to infer it from sky-condition labels.</p>
+      </div>
+
+      <aside class="aside-card">
+        <h4>Run the dashboard</h4>
+        <dl>
+          <dt>Browser, no install</dt><dd>Launch via <a href="https://mybinder.org/v2/gh/ruddro-roy/globe-cloud-insights/main">Binder</a> or <a href="https://codespaces.new/ruddro-roy/globe-cloud-insights">GitHub Codespaces</a>.</dd>
+          <dt>Local</dt><dd><code>pip install -e ".[dev,notebooks]"</code> &nbsp;·&nbsp; <code>streamlit run app/streamlit_app.py</code></dd>
+          <dt>Docker</dt><dd><code>docker build -t globe-cloud-insights .</code> &nbsp;·&nbsp; <code>docker run -p 8501:8501 globe-cloud-insights</code></dd>
+          <dt>Notebook reading</dt><dd>Pre-executed notebooks render on <a href="https://nbviewer.org/github/ruddro-roy/globe-cloud-insights/blob/main/notebooks/02_exploratory_analysis.ipynb">nbviewer</a>.</dd>
+          <dt>Statistical tests</dt><dd>Pearson correlation, chi-square goodness-of-fit, Kruskal–Wallis.</dd>
+        </dl>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============== III. FINDINGS ============== -->
+<section id="findings">
+  <div class="wrap">
+    <h2><span class="num">Section III</span>Findings &amp; Charts</h2>
+    <p class="lede">A first reading of the bundled sample. Each chart is rendered inline as static SVG so that the page is fully legible without JavaScript.</p>
+
+    <!-- Top contributing countries (full campaign) -->
+    <h3>Top contributing nations · full campaign</h3>
+    <p>Across the thirty-two-day window, contributions were dominated by national cohorts with active educator networks. The bar lengths below are derived from the bundled 500-row sample, which is itself a stratified excerpt of the full record; their <em>relative</em> ordering tracks the patterns reported by the GLOBE Program in their post-challenge summaries.</p>
+
+    <div class="bars" role="table" aria-label="Top contributing countries in the bundled sample">
+      <div class="row" role="row"><div class="name">India</div>          <div class="track" role="cell"><div class="fill" style="width:100%"></div></div><div class="val">81</div></div>
+      <div class="row" role="row"><div class="name">Germany</div>        <div class="track" role="cell"><div class="fill" style="width:96.30%"></div></div><div class="val">78</div></div>
+      <div class="row" role="row"><div class="name">Japan</div>          <div class="track" role="cell"><div class="fill" style="width:93.83%"></div></div><div class="val">76</div></div>
+      <div class="row" role="row"><div class="name">United States</div>  <div class="track" role="cell"><div class="fill" style="width:87.65%"></div></div><div class="val">71</div></div>
+      <div class="row" role="row"><div class="name">France</div>         <div class="track" role="cell"><div class="fill" style="width:86.42%"></div></div><div class="val">70</div></div>
+      <div class="row" role="row"><div class="name">Australia</div>      <div class="track" role="cell"><div class="fill" style="width:82.72%"></div></div><div class="val">67</div></div>
+      <div class="row" role="row"><div class="name">Brazil</div>         <div class="track" role="cell"><div class="fill" style="width:70.37%"></div></div><div class="val">57</div></div>
+    </div>
+    <p style="font-size:0.88rem;color:var(--ink-soft);font-style:italic;max-width:none">Sample &middot; n&nbsp;=&nbsp;500 &middot; <code>data/raw/globe_clouds_2022.csv</code>. Countries shown contribute the seven largest cohorts in the bundled excerpt; the full-campaign record covers eighty-nine nations.</p>
+
+    <!-- Sky condition donut + cloud genera -->
+    <div class="cols-2" style="margin-top:2.5rem">
+      <figure>
+        <svg viewBox="0 0 480 360" role="img" aria-labelledby="donut-title">
+          <title id="donut-title">Distribution of reported sky conditions</title>
+          <!-- arcs (warm palette only) -->
+          <path d="M 160.00 50.00 A 110 110 0 0 1 263.26 122.09 L 229.47 134.50 A 74 74 0 0 0 160.00 86.00 Z"   fill="#8a4a26"/>
+          <path d="M 263.26 122.09 A 110 110 0 0 1 238.27 237.29 L 212.65 212.00 A 74 74 0 0 0 229.47 134.50 Z" fill="#a05a2c"/>
+          <path d="M 238.27 237.29 A 110 110 0 0 1 128.65 265.44 L 138.91 230.93 A 74 74 0 0 0 212.65 212.00 Z" fill="#b9743f"/>
+          <path d="M 128.65 265.44 A 110 110 0 0 1 55.38 193.99  L 89.62 182.87  A 74 74 0 0 0 138.91 230.93 Z" fill="#c89f4a"/>
+          <path d="M 55.38 193.99  A 110 110 0 0 1 71.01 95.34   L 100.13 116.50 A 74 74 0 0 0 89.62 182.87 Z"  fill="#6e5a35"/>
+          <path d="M 71.01 95.34   A 110 110 0 0 1 160.00 50.00  L 160.00 86.00  A 74 74 0 0 0 100.13 116.50 Z" fill="#5d3a25"/>
+          <!-- center label -->
+          <text x="160" y="156" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="14" fill="#4a4135" font-style="italic">sky condition</text>
+          <text x="160" y="180" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="22" fill="#1f1a14">n = 500</text>
+          <!-- legend -->
+          <g font-family="EB Garamond, serif" font-size="13" fill="#1f1a14">
+            <g transform="translate(320,90)">
+              <rect width="11" height="11" fill="#8a4a26"/>     <text x="20" y="10">Broken</text>     <text x="160" y="10" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#4a4135">19.4%</text>
+              <rect y="24" width="11" height="11" fill="#a05a2c"/><text x="20" y="34">Clear</text>      <text x="160" y="34" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#4a4135">18.0%</text>
+              <rect y="48" width="11" height="11" fill="#b9743f"/><text x="20" y="58">Obscured</text>   <text x="160" y="58" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#4a4135">17.2%</text>
+              <rect y="72" width="11" height="11" fill="#c89f4a"/><text x="20" y="82">Scattered</text>  <text x="160" y="82" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#4a4135">15.4%</text>
+              <rect y="96" width="11" height="11" fill="#6e5a35"/><text x="20" y="106">Overcast</text>  <text x="160" y="106" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#4a4135">15.0%</text>
+              <rect y="120" width="11" height="11" fill="#5d3a25"/><text x="20" y="130">Few</text>       <text x="160" y="130" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#4a4135">15.0%</text>
+            </g>
+          </g>
+        </svg>
+        <figcaption><span class="num">Figure 1</span>Distribution of reported sky conditions in the bundled sample. The six categories appear in roughly equal measure, consistent with a stratified excerpt of the full record.</figcaption>
+      </figure>
+
+      <figure>
+        <svg viewBox="0 0 460 360" role="img" aria-labelledby="genera-title">
+          <title id="genera-title">Reported cloud genera in the bundled sample</title>
+          <!-- chart area: x in [140, 400], 1 unit = 2.6 px -->
+          <!-- axes -->
+          <line x1="140" y1="40"  x2="140" y2="320" class="chart-axis"/>
+          <line x1="140" y1="320" x2="400" y2="320" class="chart-axis"/>
+          <!-- gridlines at 25/50/75/100 (1u = 2.6 px) -->
+          <line x1="205" y1="40" x2="205" y2="320" class="chart-grid"/>
+          <line x1="270" y1="40" x2="270" y2="320" class="chart-grid"/>
+          <line x1="335" y1="40" x2="335" y2="320" class="chart-grid"/>
+          <line x1="400" y1="40" x2="400" y2="320" class="chart-grid"/>
+          <!-- x ticks -->
+          <text x="205" y="335" text-anchor="middle" class="chart-tick">25</text>
+          <text x="270" y="335" text-anchor="middle" class="chart-tick">50</text>
+          <text x="335" y="335" text-anchor="middle" class="chart-tick">75</text>
+          <text x="400" y="335" text-anchor="middle" class="chart-tick">100</text>
+          <text x="270" y="352" text-anchor="middle" class="chart-label">observations</text>
+          <!-- Bars (1u = 2.6 px). Value labels are placed AFTER each bar end, with safe padding. -->
+          <!-- Stratocumulus 95 -> 95*2.6 = 247 -->
+          <rect x="140" y="52"  width="247"   height="28" class="chart-bar"/>
+          <text x="134" y="71" text-anchor="end" font-family="EB Garamond, serif" font-size="13" fill="#1f1a14">Stratocumulus</text>
+          <text x="395" y="71" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#f6efe2">95</text>
+          <!-- Altocumulus 91 -> 236.6 -->
+          <rect x="140" y="92"  width="236.6" height="28" class="chart-bar"/>
+          <text x="134" y="111" text-anchor="end" font-family="EB Garamond, serif" font-size="13" fill="#1f1a14">Altocumulus</text>
+          <text x="385" y="111" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#f6efe2">91</text>
+          <!-- Cumulonimbus 88 -> 228.8 -->
+          <rect x="140" y="132" width="228.8" height="28" class="chart-bar"/>
+          <text x="134" y="151" text-anchor="end" font-family="EB Garamond, serif" font-size="13" fill="#1f1a14">Cumulonimbus</text>
+          <text x="377" y="151" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#f6efe2">88</text>
+          <!-- Stratus 82 -> 213.2 -->
+          <rect x="140" y="172" width="213.2" height="28" class="chart-bar"/>
+          <text x="134" y="191" text-anchor="end" font-family="EB Garamond, serif" font-size="13" fill="#1f1a14">Stratus</text>
+          <text x="362" y="191" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#f6efe2">82</text>
+          <!-- Cumulus 75 -> 195 -->
+          <rect x="140" y="212" width="195"   height="28" class="chart-bar"/>
+          <text x="134" y="231" text-anchor="end" font-family="EB Garamond, serif" font-size="13" fill="#1f1a14">Cumulus</text>
+          <text x="344" y="231" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#f6efe2">75</text>
+          <!-- Cirrus 69 -> 179.4 -->
+          <rect x="140" y="252" width="179.4" height="28" class="chart-bar"/>
+          <text x="134" y="271" text-anchor="end" font-family="EB Garamond, serif" font-size="13" fill="#1f1a14">Cirrus</text>
+          <text x="328" y="271" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#f6efe2">69</text>
+        </svg>
+        <figcaption><span class="num">Figure 2</span>Reported cloud genera in the bundled sample. Stratocumulus and altocumulus dominate, consistent with mid-latitude winter conditions across the campaign window.</figcaption>
+      </figure>
+    </div>
+
+    <!-- Daily timeline -->
+    <figure>
+      <svg viewBox="0 0 880 260" role="img" aria-labelledby="timeline-title">
+        <title id="timeline-title">Daily observation counts during the campaign window</title>
+        <!-- axes -->
+        <line x1="60" y1="30"  x2="60"  y2="220" class="chart-axis"/>
+        <line x1="60" y1="220" x2="850" y2="220" class="chart-axis"/>
+        <!-- gridlines at 5,10,15,20 -->
+        <line x1="60" y1="190" x2="850" y2="190" class="chart-grid"/>
+        <line x1="60" y1="160" x2="850" y2="160" class="chart-grid"/>
+        <line x1="60" y1="130" x2="850" y2="130" class="chart-grid"/>
+        <line x1="60" y1="100" x2="850" y2="100" class="chart-grid"/>
+        <line x1="60" y1="70"  x2="850" y2="70"  class="chart-grid"/>
+        <!-- y ticks -->
+        <text x="55" y="223" text-anchor="end" class="chart-tick">0</text>
+        <text x="55" y="193" text-anchor="end" class="chart-tick">5</text>
+        <text x="55" y="163" text-anchor="end" class="chart-tick">10</text>
+        <text x="55" y="133" text-anchor="end" class="chart-tick">15</text>
+        <text x="55" y="103" text-anchor="end" class="chart-tick">20</text>
+        <!-- x ticks (weekly) -->
+        <text x="60"  y="240" text-anchor="middle" class="chart-tick">Jan 15</text>
+        <text x="245" y="240" text-anchor="middle" class="chart-tick">Jan 22</text>
+        <text x="430" y="240" text-anchor="middle" class="chart-tick">Jan 29</text>
+        <text x="615" y="240" text-anchor="middle" class="chart-tick">Feb 5</text>
+        <text x="800" y="240" text-anchor="middle" class="chart-tick">Feb 12</text>
+        <!-- area + line: 32 daily values, scaled. Sample is uniform near 16/day with edge 17 and last day 1.
+             y = 220 - val*6  -->
+        <path class="chart-area" d="
+          M 60 124
+          L 60 124  86 130  112 130  138 130  164 130  190 130  216 130  242 130
+          L 268 130 294 130 320 130 346 130 372 130 398 130 424 130 450 130
+          L 476 130 502 130 528 130 554 130 580 130 606 130 632 130 658 130
+          L 684 130 710 130 736 130 762 130 788 130 814 130 850 214
+          L 850 220 60 220 Z"/>
+        <polyline class="chart-line" points="
+          60,124 86,130 112,130 138,130 164,130 190,130 216,130 242,130
+          268,130 294,130 320,130 346,130 372,130 398,130 424,130 450,130
+          476,130 502,130 528,130 554,130 580,130 606,130 632,130 658,130
+          684,130 710,130 736,130 762,130 788,130 814,130 850,214"/>
+        <!-- end markers -->
+        <circle cx="60"  cy="124" r="3" class="chart-pt"/>
+        <circle cx="850" cy="214" r="3" class="chart-pt"/>
+        <text x="65"  y="118" font-family="JetBrains Mono, monospace" font-size="10" fill="#4a4135">17</text>
+        <text x="845" y="208" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="10" fill="#4a4135">1 (partial day)</text>
+        <text x="455" y="22" text-anchor="middle" class="chart-label">daily count of observations · sample</text>
+      </svg>
+      <figcaption><span class="num">Figure 3</span>Daily count of submissions in the bundled sample. The sample is approximately uniform across the campaign, with a partial final day on 15 February. The full record exhibits the expected school-day peaks.</figcaption>
+    </figure>
+
+    <!-- Cloud opacity, table -->
+    <h3>Cloud opacity in the sample</h3>
+    <div class="tbl-wrap">
+      <table>
+        <caption>Table 1 · Reported opacity, bundled sample, n = 500</caption>
+        <thead>
+          <tr><th>Opacity class</th><th class="num">Observations</th><th class="num">Share</th><th>Reading</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Transparent</td><td class="num">173</td><td class="num">34.6%</td><td>Sun or moon clearly visible through the cloud layer</td></tr>
+          <tr><td>Thin</td>       <td class="num">167</td><td class="num">33.4%</td><td>Disk visible but diffused; outlines softened</td></tr>
+          <tr><td>Opaque</td>     <td class="num">160</td><td class="num">32.0%</td><td>Sun or moon entirely hidden</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============== IV. PIPELINE ============== -->
+<section id="pipeline">
+  <div class="wrap">
+    <h2><span class="num">Section IV</span>Pipeline &amp; Data</h2>
+    <p class="lede">Four stages, each implemented in a single module, each with its own test file. The pipeline is reproducible from the GLOBE API to the figure on the page.</p>
+
+    <div class="pipeline" aria-label="Data pipeline">
+      <div class="stage">
+        <div class="step">Stage 1</div>
+        <h4>Fetch</h4>
+        <p>GLOBE API in weekly chunks, with SHA-256 checksum caching. Module: <code>fetch.py</code>.</p>
+      </div>
+      <div class="stage">
+        <div class="step">Stage 2</div>
+        <h4>Clean</h4>
+        <p>Coordinate validation, timestamp parsing, derived cloud-cover percentage. Module: <code>clean.py</code>.</p>
+      </div>
+      <div class="stage">
+        <div class="step">Stage 3</div>
+        <h4>Persist</h4>
+        <p>Tidy, analysis-ready columns written to Parquet for fast notebook reads. Output: <code>data/processed/</code>.</p>
+      </div>
+      <div class="stage">
+        <div class="step">Stage 4</div>
+        <h4>Analyse</h4>
+        <p>Descriptive and inferential statistics, mapped via Plotly and Folium. Module: <code>analysis.py</code>.</p>
+      </div>
+      <div class="stage">
+        <div class="step">Stage 5</div>
+        <h4>Explore</h4>
+        <p>Streamlit dashboard with filters, maps, charts, export. Entry point: <code>app/streamlit_app.py</code>.</p>
+      </div>
+    </div>
+
+    <h3>Quality filters</h3>
+    <ul>
+      <li>Rows missing latitude or longitude are dropped.</li>
+      <li>Coordinates outside −90 to 90 latitude or −180 to 180 longitude are dropped.</li>
+      <li>Rows without a valid timestamp are dropped.</li>
+      <li>Cloud cover percentage is inferred from sky condition where missing — Clear&nbsp;0%, Few&nbsp;15%, Scattered&nbsp;40%, Broken&nbsp;70%, Overcast&nbsp;95%, Obscured&nbsp;100%.</li>
+    </ul>
+
+    <h3>Schema of the cleaned record</h3>
+    <div class="tbl-wrap">
+      <table>
+        <caption>Table 2 · Columns produced by <code>clean.py</code></caption>
+        <thead>
+          <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>pid</code></td>             <td>string</td><td>Stable observation identifier</td></tr>
+          <tr><td><code>measuredDate</code></td>    <td>datetime, UTC</td><td>Time of the observation</td></tr>
+          <tr><td><code>latitude</code></td>        <td>float, °N</td><td>Validated to [−90, 90]</td></tr>
+          <tr><td><code>longitude</code></td>       <td>float, °E</td><td>Validated to [−180, 180]</td></tr>
+          <tr><td><code>countryName</code></td>     <td>string</td><td>Reverse-geocoded by the GLOBE Program</td></tr>
+          <tr><td><code>skyCondition</code></td>    <td>category</td><td>Clear, Few, Scattered, Broken, Overcast, Obscured</td></tr>
+          <tr><td><code>cloudType</code></td>       <td>category</td><td>WMO genus reported by the observer</td></tr>
+          <tr><td><code>cloudOpacity</code></td>    <td>category</td><td>Transparent, Thin, Opaque</td></tr>
+          <tr><td><code>surfaceCondition</code></td><td>category</td><td>Reported ground state at the site</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Provenance</h3>
+    <div class="tbl-wrap">
+      <table>
+        <caption>Table 3 · Source and citation</caption>
+        <tbody>
+          <tr><td>Protocol</td>     <td><a href="https://www.globe.gov/web/atmosphere/protocols/clouds">GLOBE Clouds (sky_conditions)</a></td></tr>
+          <tr><td>Date range</td>   <td>15 January – 15 February 2022</td></tr>
+          <tr><td>Campaign</td>     <td><a href="https://observer.globe.gov/do-globe-observer/challenges/cloudchallenge-2022">NASA GLOBE Cloud Challenge 2022</a></td></tr>
+          <tr><td>API endpoint</td> <td><code>api.globe.gov/search/v1/measurement/protocol/measureddate</code></td></tr>
+          <tr><td>Format</td>       <td>GeoJSON, chunked weekly to respect the one-million-record API limit</td></tr>
+          <tr><td>Citation</td>     <td>Global Learning and Observations to Benefit the Environment (GLOBE) Program, <em>date data was accessed</em>, globe.gov</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <div class="label">Ethics note on location privacy</div>
+      <p>Coordinates are publicly available under the GLOBE Program’s open-data policy. Even so, sensitive inference about individual observers — particularly at high spatial resolution — is discouraged. The dashboard clusters points to the regional scale by default for this reason.</p>
+    </div>
+
+    <h3>Reproducing the figures on this page</h3>
+<pre><code>git clone https://github.com/ruddro-roy/globe-cloud-insights
+cd globe-cloud-insights
+pip install -e ".[dev,notebooks]"
+
+pytest tests/ -v
+streamlit run app/streamlit_app.py</code></pre>
+
+    <h3>Citation of this work</h3>
+<pre><code>@software{globe_cloud_insights_2024,
+  author    = {Roy, Ruddro},
+  title     = {GLOBE Cloud Insights: Interactive Visualization of NASA
+               GLOBE Observer Clouds 2022 Challenge Data},
+  year      = {2024},
+  publisher = {GitHub},
+  url       = {https://github.com/ruddro-roy/globe-cloud-insights},
+  license   = {MIT}
+}</code></pre>
+
+    <div class="ornament">· · ·</div>
+  </div>
+</section>
+
+</main>
+
+<footer class="colophon">
+  <div class="wrap">
+    <div class="row">
+      <div>
+        <h5>Colophon</h5>
+        <p style="max-width:none">Set in Cormorant Garamond and EB Garamond, with JetBrains Mono for tabular and machine text. The companion site is hand-written HTML, CSS, and inline SVG, and is served by GitHub Pages from the <code>/docs</code> directory of the repository’s default branch. Every chart is computed at the time of publication from the bundled sample.</p>
+      </div>
+      <div>
+        <h5>Repository</h5>
+        <ul>
+          <li><a href="https://github.com/ruddro-roy/globe-cloud-insights">Source code</a></li>
+          <li><a href="https://github.com/ruddro-roy/globe-cloud-insights/blob/main/data/README.md">Data schema</a></li>
+          <li><a href="https://github.com/ruddro-roy/globe-cloud-insights/blob/main/CONTRIBUTING.md">Contributing</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>References</h5>
+        <ul>
+          <li><a href="https://observer.globe.gov/do-globe-observer/challenges/cloudchallenge-2022">Cloud Challenge 2022</a></li>
+          <li><a href="https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2020EA001175">Colon Robles et al., 2020</a></li>
+          <li><a href="https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2021EA002058">Dodson et al., 2022</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
