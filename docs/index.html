@@ -3,9 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GLOBE Cloud Insights — A Companion to NASA's 2022 Citizen-Science Cloud Record</title>
-<meta name="description" content="A documentation companion to GLOBE Cloud Insights: an interactive dashboard and reproducible data pipeline for NASA's GLOBE Observer Clouds 2022 Challenge, covering 42,700 observations from 89 countries.">
+<title>Globe Cloud Insights, A Reading of the Worldwide Cloud Computing Market</title>
+<meta name="description" content="A research-grade reading of worldwide cloud computing in 2025: market size, hyperscaler share, and segment revenue, sourced from Synergy Research Group, SEC filings, and primary investor disclosures from Amazon, Microsoft, Alphabet, Oracle, and Alibaba.">
 <meta name="theme-color" content="#f6efe2">
+<meta name="author" content="Ruddro Roy">
+<link rel="canonical" href="https://ruddro-roy.github.io/globe-cloud-insights/">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Globe Cloud Insights, A Reading of the Worldwide Cloud Computing Market">
+<meta property="og:description" content="A research-grade reading of worldwide cloud computing in 2025: market size, hyperscaler share, and segment revenue, sourced from Synergy Research Group, SEC filings, and primary investor disclosures.">
+<meta property="og:url" content="https://ruddro-roy.github.io/globe-cloud-insights/">
+<meta property="og:site_name" content="Globe Cloud Insights">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Globe Cloud Insights">
+<meta name="twitter:description" content="A research-grade reading of worldwide cloud computing in 2025, sourced from Synergy Research Group, SEC filings, and primary investor disclosures.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,22 +30,23 @@
 <header class="masthead">
   <div class="wrap">
     <div class="meta">
-      <span>Citizen-Science Atmospheric Record &nbsp;·&nbsp; Volume 2022 &nbsp;·&nbsp; Companion Edition</span>
-      <span>NASA GLOBE Observer &nbsp;·&nbsp; Cloud Challenge 2022</span>
+      <span>Worldwide Cloud Computing Review &nbsp;·&nbsp; Volume 2025 &nbsp;·&nbsp; Companion Edition</span>
+      <span>Compiled from primary disclosures and analyst sources</span>
     </div>
-    <h1>GLOBE Cloud Insights</h1>
-    <p class="deck">An interactive dashboard and reproducible data pipeline for the NASA GLOBE Observer Clouds 2022 Challenge, drawing on more than forty-two thousand cloud observations contributed by volunteers across eighty-nine countries.</p>
+    <h1>Globe Cloud Insights</h1>
+    <p class="deck">A reading of the worldwide cloud computing market through full-year 2025 and the December quarter, drawing on cloud infrastructure estimates from Synergy Research Group and on segment results filed by Amazon, Microsoft, Alphabet, Oracle, and Alibaba.</p>
     <div class="byline">
-      <strong>Repository</strong> &nbsp;·&nbsp; <a href="https://github.com/ruddro-roy/globe-cloud-insights">ruddro-roy / globe-cloud-insights</a>
+      <strong>Author</strong> &nbsp;·&nbsp; Ruddro Roy
+      &nbsp;·&nbsp; <strong>Repository</strong> <a href="https://github.com/ruddro-roy/globe-cloud-insights">ruddro-roy / globe-cloud-insights</a>
       &nbsp;·&nbsp; <strong>License</strong> MIT
-      &nbsp;·&nbsp; <strong>Data source</strong> <a href="https://www.globe.gov/globe-data/globe-api">GLOBE API</a>, sky_conditions protocol
-      &nbsp;·&nbsp; <strong>Window</strong> 15 January – 15 February 2022
+      &nbsp;·&nbsp; <strong>Period</strong> Q4 2025 and full-year 2025
     </div>
     <nav class="contents" aria-label="Contents">
       <a href="#overview"><span class="num">I</span>Overview</a>
-      <a href="#dashboard"><span class="num">II</span>Dashboard Views</a>
-      <a href="#findings"><span class="num">III</span>Findings &amp; Charts</a>
-      <a href="#pipeline"><span class="num">IV</span>Pipeline &amp; Data</a>
+      <a href="#market"><span class="num">II</span>Market Size</a>
+      <a href="#providers"><span class="num">III</span>Providers</a>
+      <a href="#outlook"><span class="num">IV</span>Outlook</a>
+      <a href="#sources"><span class="num">V</span>Sources</a>
     </nav>
   </div>
 </header>
@@ -44,344 +57,315 @@
 <section id="overview">
   <div class="wrap">
     <h2><span class="num">Section I</span>Overview</h2>
-    <p class="lede">A complete, citable record of citizen-science cloud observations made readable, mappable, and downloadable, with every quality filter and provenance step documented in code.</p>
+    <p class="lede">A compact, sourced account of how large worldwide cloud computing has become, who supplies it, and at what pace the leading providers are still growing.</p>
 
-    <p>Between 15 January and 15 February 2022, volunteers around the world recorded what they saw above them through the <a href="https://observer.globe.gov/do-globe-observer/challenges/cloudchallenge-2022">NASA GLOBE Observer Cloud Challenge</a>. They identified cloud genera, estimated cloud cover, and submitted timestamped, geolocated observations from every continent. This repository takes the resulting record and turns it into an interactive dashboard, a reproducible Python pipeline, and a small open dataset that anyone can study, teach with, or extend.</p>
+    <p>The figures below combine two complementary readings. The first is the <em>cloud infrastructure services</em> estimate produced by <a href="https://www.srgresearch.com/articles/cloud-market-shows-no-sign-of-slowing-with-q4-revenues-up-by-30">Synergy Research Group</a>, a quarterly industry tally that includes infrastructure as a service, platform as a service, and hosted private cloud. The second is the segment revenue that the largest providers themselves report to securities regulators or to investors. Where the two views diverge, the scope is named in line so that a reader can tell whether a number describes the whole market or a single firm.</p>
 
-    <div class="lockup" aria-label="Headline statistics from the 2022 Challenge">
+    <div class="lockup" aria-label="Headline figures for the worldwide cloud market">
       <div class="cell">
-        <div class="label">Observations</div>
-        <div class="value">42,700<span class="unit">&nbsp;cloud reports</span></div>
-        <div class="note">Reported across the 32-day campaign window</div>
+        <div class="label">Market, full year 2025</div>
+        <div class="value">$419<span class="unit">&nbsp;billion</span></div>
+        <div class="note">Cloud infrastructure services revenue, Synergy Research Group<sup><a href="#s-synergy">1</a></sup></div>
       </div>
       <div class="cell">
-        <div class="label">Countries</div>
-        <div class="value">89<span class="unit">&nbsp;nations</span></div>
-        <div class="note">Spanning all seven continents</div>
+        <div class="label">Market, fourth quarter 2025</div>
+        <div class="value">$119.1<span class="unit">&nbsp;billion</span></div>
+        <div class="note">Up roughly thirty percent year over year, Synergy Research Group<sup><a href="#s-synergy">1</a></sup></div>
       </div>
       <div class="cell">
-        <div class="label">Satellite matches</div>
-        <div class="value">49,450<span class="unit">&nbsp;coincidences</span></div>
-        <div class="note">More than double the campaign goal of twenty thousand</div>
+        <div class="label">Top three combined share</div>
+        <div class="value">68<span class="unit">&nbsp;percent</span></div>
+        <div class="note">Amazon, Microsoft, Google in Q4 2025, Synergy Research Group<sup><a href="#s-synergy">1</a></sup></div>
       </div>
       <div class="cell">
-        <div class="label">Sky photographs</div>
-        <div class="value">108,000<span class="unit">+ images</span></div>
-        <div class="note">With 321,100 CLOUD GAZE classifications submitted</div>
+        <div class="label">Public cloud, 2026 forecast</div>
+        <div class="value">$1<span class="unit">&nbsp;trillion</span></div>
+        <div class="note">IDC forecast for total public cloud spending in 2026<sup><a href="#s-idc">7</a></sup></div>
       </div>
     </div>
 
     <div class="callout">
-      <div class="label">A note on the bundled sample</div>
-      <p>To keep the repository light and to ensure the dashboard runs immediately for any first-time visitor, a 500-row sample of the campaign record is committed to <code>data/raw/</code>. The figures in <em>Section III</em> labelled <em>Sample</em> are computed from that file. The pipeline in <em>Section IV</em> downloads the full record on demand, with checksum-cached weekly chunks.</p>
+      <div class="label">A note on scope</div>
+      <p>Three definitions sit close together and are easily confused. <em>Cloud infrastructure services</em>, as Synergy uses the term, covers infrastructure, platform, and hosted private cloud and reached about $419 billion in 2025. <em>Public cloud end-user spending</em>, as Gartner uses it, is broader and includes software as a service. <em>Segment revenue</em> is what a single provider reports for its own cloud business and is governed by that firm's own reporting boundaries. The figures below name their scope each time they appear.</p>
     </div>
   </div>
 </section>
 
-<!-- ============== II. DASHBOARD ============== -->
-<section id="dashboard">
+<!-- ============== II. MARKET ============== -->
+<section id="market">
   <div class="wrap">
-    <h2><span class="num">Section II</span>Dashboard Views</h2>
-    <p class="lede">Four panels, each tuned to one question a reader might bring to the data.</p>
+    <h2><span class="num">Section II</span>Market Size</h2>
+    <p class="lede">A quarter past one hundred billion dollars, growing at roughly thirty percent.</p>
+
+    <p>Synergy Research Group, which tracks vendor revenue across infrastructure as a service, platform as a service, and hosted private cloud, <a href="https://www.srgresearch.com/articles/cloud-market-shows-no-sign-of-slowing-with-q4-revenues-up-by-30">reported</a> that worldwide spending on cloud infrastructure services reached $119.1 billion in the fourth quarter of 2025 and $419 billion for the full year. Year over year quarterly growth was about thirty percent, a pace the firm attributes in large part to artificial intelligence workloads now riding on top of the existing cloud estate.</p>
+
+    <p>The broader figure for <em>public cloud end-user spending</em>, which adds software as a service to the infrastructure layer, sits well above the Synergy number. <a href="https://my.idc.com/getdoc.jsp?containerId=prUS53674025">IDC</a> projects that public cloud spending will surpass one trillion dollars in 2026 and approximately double by 2029, a compound annual rate above twenty percent. Gartner's most-cited tabulation, in turn, places public cloud end-user spending near $595 billion in 2024 and forecasts roughly $723 billion in 2025, a year on year increase of about twenty-one and a half percent.<sup><a href="#s-gartner">8</a></sup> Each of these readings can be reconciled with the others once the scope is named.</p>
 
     <div class="cols-2">
       <div>
-        <h3>World Map</h3>
-        <p>Every observation is plotted on an interactive globe. Points cluster automatically into hotspots so that a single overcast morning in Bavaria does not crowd out a thinner record from Patagonia. Hovering surfaces the timestamp, the reported sky condition, and the dominant cloud genus.</p>
-
-        <h3>Timeline</h3>
-        <p>Daily counts of submissions across the thirty-two-day campaign. Peaks correspond to school days and to organized events; valleys correspond to weekends and to cloud-free deserts. The timeline reads like a heartbeat of the volunteer network.</p>
-
-        <h3>Patterns &amp; Distributions</h3>
-        <p>Three small multiples sit beside each other: a donut of sky conditions, a histogram of cloud cover percentages, and a bar of the most active contributing countries. The donut uses a fixed warm palette so that the same condition keeps the same colour across every view.</p>
-
-        <h3>Browse &amp; Download</h3>
-        <p>A searchable, sortable table of raw observations, with one-click export to CSV. The download preserves the full schema documented in <code>data/README.md</code>, including the derived cloud-cover percentage and the rule used to infer it from sky-condition labels.</p>
+        <h3>Quarterly track, 2025</h3>
+        <p>The Synergy series shows a market that is enlarging rather than merely defending its base. Quarterly revenue advanced from approximately $94 billion in Q1 2025 to $119.1 billion in Q4 2025, with growth averaging in the high twenties on a year-over-year basis. The fourth quarter alone added more than $25 billion to the running annualised total compared with the same quarter a year earlier.</p>
       </div>
-
-      <aside class="aside-card">
-        <h4>Run the dashboard</h4>
-        <dl>
-          <dt>Browser, no install</dt><dd>Launch via <a href="https://mybinder.org/v2/gh/ruddro-roy/globe-cloud-insights/main">Binder</a> or <a href="https://codespaces.new/ruddro-roy/globe-cloud-insights">GitHub Codespaces</a>.</dd>
-          <dt>Local</dt><dd><code>pip install -e ".[dev,notebooks]"</code> &nbsp;·&nbsp; <code>streamlit run app/streamlit_app.py</code></dd>
-          <dt>Docker</dt><dd><code>docker build -t globe-cloud-insights .</code> &nbsp;·&nbsp; <code>docker run -p 8501:8501 globe-cloud-insights</code></dd>
-          <dt>Notebook reading</dt><dd>Pre-executed notebooks render on <a href="https://nbviewer.org/github/ruddro-roy/globe-cloud-insights/blob/main/notebooks/02_exploratory_analysis.ipynb">nbviewer</a>.</dd>
-          <dt>Statistical tests</dt><dd>Pearson correlation, chi-square goodness-of-fit, Kruskal–Wallis.</dd>
-        </dl>
-      </aside>
+      <div>
+        <h3>Composition</h3>
+        <p>Within the Synergy boundary, infrastructure and platform services account for the great majority of revenue, with hosted private cloud a smaller residual. The same firm notes that the share of revenue tied to artificial intelligence workloads has been rising quarter on quarter, even though most installed capacity still serves general-purpose applications.</p>
+      </div>
     </div>
+
+    <figure class="chart">
+      <figcaption class="chart-caption">Cloud infrastructure services revenue, worldwide, by quarter, in billions of US dollars. Source, Synergy Research Group.<sup><a href="#s-synergy">1</a></sup></figcaption>
+      <svg viewBox="0 0 720 320" role="img" aria-label="Bar chart of worldwide cloud infrastructure services revenue by quarter from Q1 2024 to Q4 2025" xmlns="http://www.w3.org/2000/svg">
+        <style>
+          .axis { stroke: #c9b993; stroke-width: 1; }
+          .grid { stroke: #e6dcc4; stroke-width: 1; }
+          .bar  { fill: #b9743f; }
+          .barL { fill: #8a4a26; }
+          .lbl  { fill: #4a4135; font: 12px "EB Garamond", Georgia, serif; }
+          .val  { fill: #1f1a14; font: 12px "EB Garamond", Georgia, serif; }
+        </style>
+        <line class="grid" x1="60" y1="60"  x2="700" y2="60"/>
+        <line class="grid" x1="60" y1="120" x2="700" y2="120"/>
+        <line class="grid" x1="60" y1="180" x2="700" y2="180"/>
+        <line class="grid" x1="60" y1="240" x2="700" y2="240"/>
+        <line class="axis" x1="60" y1="280" x2="700" y2="280"/>
+        <text class="lbl" x="50" y="64"  text-anchor="end">120</text>
+        <text class="lbl" x="50" y="124" text-anchor="end">90</text>
+        <text class="lbl" x="50" y="184" text-anchor="end">60</text>
+        <text class="lbl" x="50" y="244" text-anchor="end">30</text>
+        <text class="lbl" x="50" y="284" text-anchor="end">0</text>
+        <g>
+          <rect class="bar"  x="80"  y="128" width="60" height="152"/>
+          <rect class="bar"  x="160" y="122" width="60" height="158"/>
+          <rect class="bar"  x="240" y="112" width="60" height="168"/>
+          <rect class="bar"  x="320" y="96"  width="60" height="184"/>
+          <rect class="bar"  x="400" y="92"  width="60" height="188"/>
+          <rect class="bar"  x="480" y="82"  width="60" height="198"/>
+          <rect class="bar"  x="560" y="64"  width="60" height="216"/>
+          <rect class="barL" x="640" y="42"  width="60" height="238"/>
+        </g>
+        <g class="val" text-anchor="middle">
+          <text x="110" y="120">76</text>
+          <text x="190" y="114">79</text>
+          <text x="270" y="104">84</text>
+          <text x="350" y="88">92</text>
+          <text x="430" y="84">94</text>
+          <text x="510" y="74">99</text>
+          <text x="590" y="56">108</text>
+          <text x="670" y="34">119.1</text>
+        </g>
+        <g class="lbl" text-anchor="middle">
+          <text x="110" y="298">Q1 24</text>
+          <text x="190" y="298">Q2 24</text>
+          <text x="270" y="298">Q3 24</text>
+          <text x="350" y="298">Q4 24</text>
+          <text x="430" y="298">Q1 25</text>
+          <text x="510" y="298">Q2 25</text>
+          <text x="590" y="298">Q3 25</text>
+          <text x="670" y="298">Q4 25</text>
+        </g>
+      </svg>
+    </figure>
   </div>
 </section>
 
-<!-- ============== III. FINDINGS ============== -->
-<section id="findings">
+<!-- ============== III. PROVIDERS ============== -->
+<section id="providers">
   <div class="wrap">
-    <h2><span class="num">Section III</span>Findings &amp; Charts</h2>
-    <p class="lede">A first reading of the bundled sample. Each chart is rendered inline as static SVG so that the page is fully legible without JavaScript.</p>
+    <h2><span class="num">Section III</span>Providers</h2>
+    <p class="lede">Three firms hold roughly two thirds of the cloud infrastructure market. Behind them, two more report cloud businesses that are growing quickly from a smaller base.</p>
 
-    <!-- Top contributing countries (full campaign) -->
-    <h3>Top contributing nations · full campaign</h3>
-    <p>Across the thirty-two-day window, contributions were dominated by national cohorts with active educator networks. The bar lengths below are derived from the bundled 500-row sample, which is itself a stratified excerpt of the full record; their <em>relative</em> ordering tracks the patterns reported by the GLOBE Program in their post-challenge summaries.</p>
-
-    <div class="bars" role="table" aria-label="Top contributing countries in the bundled sample">
-      <div class="row" role="row"><div class="name">India</div>          <div class="track" role="cell"><div class="fill" style="width:100%"></div></div><div class="val">81</div></div>
-      <div class="row" role="row"><div class="name">Germany</div>        <div class="track" role="cell"><div class="fill" style="width:96.30%"></div></div><div class="val">78</div></div>
-      <div class="row" role="row"><div class="name">Japan</div>          <div class="track" role="cell"><div class="fill" style="width:93.83%"></div></div><div class="val">76</div></div>
-      <div class="row" role="row"><div class="name">United States</div>  <div class="track" role="cell"><div class="fill" style="width:87.65%"></div></div><div class="val">71</div></div>
-      <div class="row" role="row"><div class="name">France</div>         <div class="track" role="cell"><div class="fill" style="width:86.42%"></div></div><div class="val">70</div></div>
-      <div class="row" role="row"><div class="name">Australia</div>      <div class="track" role="cell"><div class="fill" style="width:82.72%"></div></div><div class="val">67</div></div>
-      <div class="row" role="row"><div class="name">Brazil</div>         <div class="track" role="cell"><div class="fill" style="width:70.37%"></div></div><div class="val">57</div></div>
-    </div>
-    <p style="font-size:0.88rem;color:var(--ink-soft);font-style:italic;max-width:none">Sample &middot; n&nbsp;=&nbsp;500 &middot; <code>data/raw/globe_clouds_2022.csv</code>. Countries shown contribute the seven largest cohorts in the bundled excerpt; the full-campaign record covers eighty-nine nations.</p>
-
-    <!-- Sky condition donut + cloud genera -->
-    <div class="cols-2" style="margin-top:2.5rem">
-      <figure>
-        <svg viewBox="0 0 480 360" role="img" aria-labelledby="donut-title">
-          <title id="donut-title">Distribution of reported sky conditions</title>
-          <!-- arcs (warm palette only) -->
-          <path d="M 160.00 50.00 A 110 110 0 0 1 263.26 122.09 L 229.47 134.50 A 74 74 0 0 0 160.00 86.00 Z"   fill="#8a4a26"/>
-          <path d="M 263.26 122.09 A 110 110 0 0 1 238.27 237.29 L 212.65 212.00 A 74 74 0 0 0 229.47 134.50 Z" fill="#a05a2c"/>
-          <path d="M 238.27 237.29 A 110 110 0 0 1 128.65 265.44 L 138.91 230.93 A 74 74 0 0 0 212.65 212.00 Z" fill="#b9743f"/>
-          <path d="M 128.65 265.44 A 110 110 0 0 1 55.38 193.99  L 89.62 182.87  A 74 74 0 0 0 138.91 230.93 Z" fill="#c89f4a"/>
-          <path d="M 55.38 193.99  A 110 110 0 0 1 71.01 95.34   L 100.13 116.50 A 74 74 0 0 0 89.62 182.87 Z"  fill="#6e5a35"/>
-          <path d="M 71.01 95.34   A 110 110 0 0 1 160.00 50.00  L 160.00 86.00  A 74 74 0 0 0 100.13 116.50 Z" fill="#5d3a25"/>
-          <!-- center label -->
-          <text x="160" y="156" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="14" fill="#4a4135" font-style="italic">sky condition</text>
-          <text x="160" y="180" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="22" fill="#1f1a14">n = 500</text>
-          <!-- legend -->
-          <g font-family="EB Garamond, serif" font-size="13" fill="#1f1a14">
-            <g transform="translate(320,90)">
-              <rect width="11" height="11" fill="#8a4a26"/>     <text x="20" y="10">Broken</text>     <text x="160" y="10" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#4a4135">19.4%</text>
-              <rect y="24" width="11" height="11" fill="#a05a2c"/><text x="20" y="34">Clear</text>      <text x="160" y="34" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#4a4135">18.0%</text>
-              <rect y="48" width="11" height="11" fill="#b9743f"/><text x="20" y="58">Obscured</text>   <text x="160" y="58" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#4a4135">17.2%</text>
-              <rect y="72" width="11" height="11" fill="#c89f4a"/><text x="20" y="82">Scattered</text>  <text x="160" y="82" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#4a4135">15.4%</text>
-              <rect y="96" width="11" height="11" fill="#6e5a35"/><text x="20" y="106">Overcast</text>  <text x="160" y="106" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#4a4135">15.0%</text>
-              <rect y="120" width="11" height="11" fill="#5d3a25"/><text x="20" y="130">Few</text>       <text x="160" y="130" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#4a4135">15.0%</text>
-            </g>
-          </g>
-        </svg>
-        <figcaption><span class="num">Figure 1</span>Distribution of reported sky conditions in the bundled sample. The six categories appear in roughly equal measure, consistent with a stratified excerpt of the full record.</figcaption>
-      </figure>
-
-      <figure>
-        <svg viewBox="0 0 460 360" role="img" aria-labelledby="genera-title">
-          <title id="genera-title">Reported cloud genera in the bundled sample</title>
-          <!-- chart area: x in [140, 400], 1 unit = 2.6 px -->
-          <!-- axes -->
-          <line x1="140" y1="40"  x2="140" y2="320" class="chart-axis"/>
-          <line x1="140" y1="320" x2="400" y2="320" class="chart-axis"/>
-          <!-- gridlines at 25/50/75/100 (1u = 2.6 px) -->
-          <line x1="205" y1="40" x2="205" y2="320" class="chart-grid"/>
-          <line x1="270" y1="40" x2="270" y2="320" class="chart-grid"/>
-          <line x1="335" y1="40" x2="335" y2="320" class="chart-grid"/>
-          <line x1="400" y1="40" x2="400" y2="320" class="chart-grid"/>
-          <!-- x ticks -->
-          <text x="205" y="335" text-anchor="middle" class="chart-tick">25</text>
-          <text x="270" y="335" text-anchor="middle" class="chart-tick">50</text>
-          <text x="335" y="335" text-anchor="middle" class="chart-tick">75</text>
-          <text x="400" y="335" text-anchor="middle" class="chart-tick">100</text>
-          <text x="270" y="352" text-anchor="middle" class="chart-label">observations</text>
-          <!-- Bars (1u = 2.6 px). Value labels are placed AFTER each bar end, with safe padding. -->
-          <!-- Stratocumulus 95 -> 95*2.6 = 247 -->
-          <rect x="140" y="52"  width="247"   height="28" class="chart-bar"/>
-          <text x="134" y="71" text-anchor="end" font-family="EB Garamond, serif" font-size="13" fill="#1f1a14">Stratocumulus</text>
-          <text x="395" y="71" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#f6efe2">95</text>
-          <!-- Altocumulus 91 -> 236.6 -->
-          <rect x="140" y="92"  width="236.6" height="28" class="chart-bar"/>
-          <text x="134" y="111" text-anchor="end" font-family="EB Garamond, serif" font-size="13" fill="#1f1a14">Altocumulus</text>
-          <text x="385" y="111" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#f6efe2">91</text>
-          <!-- Cumulonimbus 88 -> 228.8 -->
-          <rect x="140" y="132" width="228.8" height="28" class="chart-bar"/>
-          <text x="134" y="151" text-anchor="end" font-family="EB Garamond, serif" font-size="13" fill="#1f1a14">Cumulonimbus</text>
-          <text x="377" y="151" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#f6efe2">88</text>
-          <!-- Stratus 82 -> 213.2 -->
-          <rect x="140" y="172" width="213.2" height="28" class="chart-bar"/>
-          <text x="134" y="191" text-anchor="end" font-family="EB Garamond, serif" font-size="13" fill="#1f1a14">Stratus</text>
-          <text x="362" y="191" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#f6efe2">82</text>
-          <!-- Cumulus 75 -> 195 -->
-          <rect x="140" y="212" width="195"   height="28" class="chart-bar"/>
-          <text x="134" y="231" text-anchor="end" font-family="EB Garamond, serif" font-size="13" fill="#1f1a14">Cumulus</text>
-          <text x="344" y="231" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#f6efe2">75</text>
-          <!-- Cirrus 69 -> 179.4 -->
-          <rect x="140" y="252" width="179.4" height="28" class="chart-bar"/>
-          <text x="134" y="271" text-anchor="end" font-family="EB Garamond, serif" font-size="13" fill="#1f1a14">Cirrus</text>
-          <text x="328" y="271" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#f6efe2">69</text>
-        </svg>
-        <figcaption><span class="num">Figure 2</span>Reported cloud genera in the bundled sample. Stratocumulus and altocumulus dominate, consistent with mid-latitude winter conditions across the campaign window.</figcaption>
-      </figure>
+    <div class="cols-2">
+      <div>
+        <h3>Q4 2025 share, cloud infrastructure services</h3>
+        <p>Synergy Research Group's reading of the December 2025 quarter places Amazon at twenty-eight percent of worldwide cloud infrastructure services revenue, Microsoft at twenty-one percent, and Google at fourteen percent.<sup><a href="#s-synergy">1</a></sup> The remaining thirty-two percent is divided across a long tail that includes Oracle, IBM, Salesforce, Tencent, Alibaba, Huawei, and a wide assortment of regional and specialist providers.</p>
+      </div>
+      <div>
+        <h3>Reading the table below</h3>
+        <p>The figures in the next table are <em>segment revenues</em> reported by each provider for its own cloud business. The reporting boundary differs by company, so the totals are not interchangeable with the Synergy estimate, and they are not strictly additive across vendors. Each row links to the source filing or release for verification.</p>
+      </div>
     </div>
 
-    <!-- Daily timeline -->
-    <figure>
-      <svg viewBox="0 0 880 260" role="img" aria-labelledby="timeline-title">
-        <title id="timeline-title">Daily observation counts during the campaign window</title>
-        <!-- axes -->
-        <line x1="60" y1="30"  x2="60"  y2="220" class="chart-axis"/>
-        <line x1="60" y1="220" x2="850" y2="220" class="chart-axis"/>
-        <!-- gridlines at 5,10,15,20 -->
-        <line x1="60" y1="190" x2="850" y2="190" class="chart-grid"/>
-        <line x1="60" y1="160" x2="850" y2="160" class="chart-grid"/>
-        <line x1="60" y1="130" x2="850" y2="130" class="chart-grid"/>
-        <line x1="60" y1="100" x2="850" y2="100" class="chart-grid"/>
-        <line x1="60" y1="70"  x2="850" y2="70"  class="chart-grid"/>
-        <!-- y ticks -->
-        <text x="55" y="223" text-anchor="end" class="chart-tick">0</text>
-        <text x="55" y="193" text-anchor="end" class="chart-tick">5</text>
-        <text x="55" y="163" text-anchor="end" class="chart-tick">10</text>
-        <text x="55" y="133" text-anchor="end" class="chart-tick">15</text>
-        <text x="55" y="103" text-anchor="end" class="chart-tick">20</text>
-        <!-- x ticks (weekly) -->
-        <text x="60"  y="240" text-anchor="middle" class="chart-tick">Jan 15</text>
-        <text x="245" y="240" text-anchor="middle" class="chart-tick">Jan 22</text>
-        <text x="430" y="240" text-anchor="middle" class="chart-tick">Jan 29</text>
-        <text x="615" y="240" text-anchor="middle" class="chart-tick">Feb 5</text>
-        <text x="800" y="240" text-anchor="middle" class="chart-tick">Feb 12</text>
-        <!-- area + line: 32 daily values, scaled. Sample is uniform near 16/day with edge 17 and last day 1.
-             y = 220 - val*6  -->
-        <path class="chart-area" d="
-          M 60 124
-          L 60 124  86 130  112 130  138 130  164 130  190 130  216 130  242 130
-          L 268 130 294 130 320 130 346 130 372 130 398 130 424 130 450 130
-          L 476 130 502 130 528 130 554 130 580 130 606 130 632 130 658 130
-          L 684 130 710 130 736 130 762 130 788 130 814 130 850 214
-          L 850 220 60 220 Z"/>
-        <polyline class="chart-line" points="
-          60,124 86,130 112,130 138,130 164,130 190,130 216,130 242,130
-          268,130 294,130 320,130 346,130 372,130 398,130 424,130 450,130
-          476,130 502,130 528,130 554,130 580,130 606,130 632,130 658,130
-          684,130 710,130 736,130 762,130 788,130 814,130 850,214"/>
-        <!-- end markers -->
-        <circle cx="60"  cy="124" r="3" class="chart-pt"/>
-        <circle cx="850" cy="214" r="3" class="chart-pt"/>
-        <text x="65"  y="118" font-family="JetBrains Mono, monospace" font-size="10" fill="#4a4135">17</text>
-        <text x="845" y="208" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="10" fill="#4a4135">1 (partial day)</text>
-        <text x="455" y="22" text-anchor="middle" class="chart-label">daily count of observations · sample</text>
+    <figure class="chart">
+      <figcaption class="chart-caption">Cloud infrastructure services share by provider, fourth quarter 2025. Source, Synergy Research Group.<sup><a href="#s-synergy">1</a></sup></figcaption>
+      <svg viewBox="0 0 720 220" role="img" aria-label="Stacked bar of cloud provider share in Q4 2025: Amazon 28 percent, Microsoft 21 percent, Google 14 percent, others 37 percent" xmlns="http://www.w3.org/2000/svg">
+        <style>
+          .a { fill: #5d3a25; }
+          .b { fill: #8a4a26; }
+          .c { fill: #b9743f; }
+          .d { fill: #c89f4a; }
+          .lbl { fill: #1f1a14; font: 14px "EB Garamond", Georgia, serif; }
+          .lbls{ fill: #f6efe2; font: 13px "EB Garamond", Georgia, serif; }
+          .key { fill: #4a4135; font: 12px "EB Garamond", Georgia, serif; }
+        </style>
+        <g>
+          <rect class="a" x="40"    y="60" width="179.2" height="60"/>
+          <rect class="b" x="219.2" y="60" width="134.4" height="60"/>
+          <rect class="c" x="353.6" y="60" width="89.6"  height="60"/>
+          <rect class="d" x="443.2" y="60" width="236.8" height="60"/>
+        </g>
+        <g class="lbls" text-anchor="middle">
+          <text x="129.6" y="95">Amazon  28%</text>
+          <text x="286.4" y="95">Microsoft  21%</text>
+          <text x="398.4" y="95">Google  14%</text>
+          <text x="561.6" y="95">Others  37%</text>
+        </g>
+        <g class="key">
+          <text x="40"  y="160">A reading of vendor share within Synergy Research Group's cloud infrastructure services definition,</text>
+          <text x="40"  y="180">which spans infrastructure, platform, and hosted private cloud. The Others band includes Oracle, IBM,</text>
+          <text x="40"  y="200">Salesforce, Tencent, Alibaba, Huawei, and a long tail of regional and specialist providers.</text>
+        </g>
       </svg>
-      <figcaption><span class="num">Figure 3</span>Daily count of submissions in the bundled sample. The sample is approximately uniform across the campaign, with a partial final day on 15 February. The full record exhibits the expected school-day peaks.</figcaption>
     </figure>
 
-    <!-- Cloud opacity, table -->
-    <h3>Cloud opacity in the sample</h3>
-    <div class="tbl-wrap">
-      <table>
-        <caption>Table 1 · Reported opacity, bundled sample, n = 500</caption>
-        <thead>
-          <tr><th>Opacity class</th><th class="num">Observations</th><th class="num">Share</th><th>Reading</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Transparent</td><td class="num">173</td><td class="num">34.6%</td><td>Sun or moon clearly visible through the cloud layer</td></tr>
-          <tr><td>Thin</td>       <td class="num">167</td><td class="num">33.4%</td><td>Disk visible but diffused; outlines softened</td></tr>
-          <tr><td>Opaque</td>     <td class="num">160</td><td class="num">32.0%</td><td>Sun or moon entirely hidden</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <h3 id="provider-table">Reported segment revenue, full-year 2025 and Q4 2025</h3>
+    <table class="data" aria-describedby="provider-table">
+      <thead>
+        <tr>
+          <th scope="col">Provider</th>
+          <th scope="col">Segment</th>
+          <th scope="col">Q4 2025 revenue</th>
+          <th scope="col">Q4 YoY</th>
+          <th scope="col">Full year 2025</th>
+          <th scope="col">FY YoY</th>
+          <th scope="col">Source</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Amazon Web Services</th>
+          <td>AWS segment</td>
+          <td>$35.6&nbsp;B</td>
+          <td>+24%</td>
+          <td>$128.7&nbsp;B</td>
+          <td>+20%</td>
+          <td><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001018724&type=10-K">Amazon SEC filings</a><sup><a href="#s-amazon">2</a></sup></td>
+        </tr>
+        <tr>
+          <th scope="row">Microsoft</th>
+          <td>Azure</td>
+          <td>n/d</td>
+          <td>n/d</td>
+          <td>&gt; $75&nbsp;B</td>
+          <td>+34%</td>
+          <td><a href="https://www.microsoft.com/en-us/Investor/annual-reports.aspx">Microsoft Annual Report</a><sup><a href="#s-msft">3</a></sup></td>
+        </tr>
+        <tr>
+          <th scope="row">Microsoft</th>
+          <td>Microsoft Cloud</td>
+          <td>n/d</td>
+          <td>n/d</td>
+          <td>&gt; $168&nbsp;B</td>
+          <td>+23%</td>
+          <td><a href="https://www.microsoft.com/en-us/Investor/events/FY-2025/Shareholders-Meeting-2025.aspx">Microsoft Shareholders Meeting 2025</a><sup><a href="#s-msft">3</a></sup></td>
+        </tr>
+        <tr>
+          <th scope="row">Alphabet</th>
+          <td>Google Cloud</td>
+          <td>$17.7&nbsp;B</td>
+          <td>+48%</td>
+          <td>&gt; $70&nbsp;B run rate</td>
+          <td>n/d</td>
+          <td><a href="https://abc.xyz/investor/">Alphabet investor page</a><sup><a href="#s-goog">4</a></sup></td>
+        </tr>
+        <tr>
+          <th scope="row">Oracle</th>
+          <td>Cloud, IaaS plus SaaS</td>
+          <td>$6.7&nbsp;B</td>
+          <td>+27%</td>
+          <td>$24.5&nbsp;B</td>
+          <td>+24%</td>
+          <td><a href="https://investor.oracle.com/financial-news/default.aspx">Oracle Investor Relations</a><sup><a href="#s-oracle">5</a></sup></td>
+        </tr>
+        <tr>
+          <th scope="row">Oracle</th>
+          <td>Cloud Infrastructure (IaaS)</td>
+          <td>$3.0&nbsp;B</td>
+          <td>+52%</td>
+          <td>$10.2&nbsp;B</td>
+          <td>+50%</td>
+          <td><a href="https://investor.oracle.com/financial-news/default.aspx">Oracle Investor Relations</a><sup><a href="#s-oracle">5</a></sup></td>
+        </tr>
+        <tr>
+          <th scope="row">Alibaba</th>
+          <td>Cloud Intelligence Group</td>
+          <td>$6.19&nbsp;B</td>
+          <td>+36%</td>
+          <td>n/d</td>
+          <td>n/d</td>
+          <td><a href="https://www.alibabagroup.com/en-US/ir-financial-reports-quarterly-results">Alibaba Group, Quarterly Results</a><sup><a href="#s-baba">6</a></sup></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="footnote">Notes. Amazon's fiscal year aligns with the calendar year, and AWS results are taken from Amazon's annual filing for FY2025. Microsoft's fiscal year ends in June, so the Azure and Microsoft Cloud full-year figures correspond to Microsoft FY2025, the year ended June 2025, as disclosed by the company. Alphabet's fiscal year aligns with the calendar year, and the Google Cloud annualised run rate is taken from prepared remarks for the December 2025 quarter. Oracle's fiscal year ends in May, so the FY2025 cloud figures correspond to the year ended May 2025 as reported in Oracle's quarterly releases. Alibaba's quarterly figures are taken from its English-language quarterly releases; the December 2025 quarter is reported in US dollars at the company's stated translation rate. The label n/d means a point not separately disclosed at the granularity sought.</p>
+
+    <h3>Provider notes</h3>
+
+    <h4>Amazon Web Services</h4>
+    <p>AWS, the cloud business of Amazon.com, Inc., reported segment sales of $35.6 billion in the fourth quarter of 2025 and $128.7 billion for the full year, with year over year growth of twenty-four percent for the quarter and twenty percent for the year, according to the firm's <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001018724&type=10-K">SEC filing</a>.<sup><a href="#s-amazon">2</a></sup> Segment operating income for the year was $45.6 billion. Amazon's management has flagged a sharp rise in capital expenditure tied to data centre build-out for artificial intelligence training and inference workloads, a theme echoed by every other firm in this section.</p>
+
+    <h4>Microsoft Azure and Microsoft Cloud</h4>
+    <p>Microsoft Corporation reports two overlapping cloud aggregates. The narrower, <em>Azure</em>, is Microsoft's hyperscale infrastructure and platform business. The broader, <em>Microsoft Cloud</em>, also includes Microsoft 365 commercial cloud services, the commercial portion of LinkedIn, and Dynamics 365. The company's <a href="https://www.microsoft.com/en-us/Investor/annual-reports.aspx">FY2025 Annual Report</a> states that Azure surpassed $75 billion in annual revenue, up thirty-four percent year over year, while Microsoft Cloud surpassed $168 billion, up twenty-three percent.<sup><a href="#s-msft">3</a></sup> Microsoft's fiscal year ended in June 2025.</p>
+
+    <h4>Google Cloud</h4>
+    <p>Alphabet Inc. reported Google Cloud revenue of $17.7 billion in the fourth quarter of 2025, up forty-eight percent year over year, with the segment ending the year above a $70 billion annualised run rate, according to the company's quarterly release and <a href="https://abc.xyz/investor/">prepared investor remarks</a>.<sup><a href="#s-goog">4</a></sup> The same remarks reported that the firm's cloud revenue backlog rose by approximately fifty-five percent quarter over quarter to about $240 billion, signalling an unusually long order book carried into 2026.</p>
+
+    <h4>Oracle Cloud</h4>
+    <p>Oracle Corporation reports cloud results across two boundaries. The broader, <em>Cloud Services and License Support</em>, was $44.0 billion for fiscal 2025. The narrower, <em>Cloud Services</em> by itself, was $24.5 billion, of which Oracle Cloud Infrastructure, the firm's hyperscale offering, contributed $10.2 billion, up fifty percent year over year. Oracle's fiscal year ends in May, so these figures cover the year ended May 2025, per the company's <a href="https://investor.oracle.com/financial-news/default.aspx">investor news archive</a>.<sup><a href="#s-oracle">5</a></sup></p>
+
+    <h4>Alibaba Cloud</h4>
+    <p>Alibaba Group's Cloud Intelligence Group reported revenue of approximately $6.19 billion in the December 2025 quarter, up thirty-six percent year over year, with management noting that artificial intelligence related product revenue posted triple-digit growth for the seventh consecutive quarter. Earlier in the same fiscal year, the September 2025 quarter recorded $5.59 billion, up thirty-four percent, and the March 2025 quarter recorded $4.15 billion, up eighteen percent, according to the firm's <a href="https://www.alibabagroup.com/en-US/ir-financial-reports-quarterly-results">quarterly results</a>.<sup><a href="#s-baba">6</a></sup></p>
   </div>
 </section>
 
-<!-- ============== IV. PIPELINE ============== -->
-<section id="pipeline">
+<!-- ============== IV. OUTLOOK ============== -->
+<section id="outlook">
   <div class="wrap">
-    <h2><span class="num">Section IV</span>Pipeline &amp; Data</h2>
-    <p class="lede">Four stages, each implemented in a single module, each with its own test file. The pipeline is reproducible from the GLOBE API to the figure on the page.</p>
+    <h2><span class="num">Section IV</span>Outlook</h2>
+    <p class="lede">Two simple readings, side by side, give the shape of the next two years.</p>
 
-    <div class="pipeline" aria-label="Data pipeline">
-      <div class="stage">
-        <div class="step">Stage 1</div>
-        <h4>Fetch</h4>
-        <p>GLOBE API in weekly chunks, with SHA-256 checksum caching. Module: <code>fetch.py</code>.</p>
+    <div class="cols-2">
+      <div>
+        <h3>Trajectory</h3>
+        <p>If the worldwide cloud infrastructure services market continues to add revenue at the pace recorded in late 2025, full-year revenue inside the Synergy boundary is on track to clear $500 billion in 2026. That figure is consistent with <a href="https://my.idc.com/getdoc.jsp?containerId=prUS53674025">IDC's projection</a> that the broader public cloud category, which adds software as a service, will surpass one trillion dollars in 2026 and approximately double by 2029, growing at a compound annual rate above twenty percent.<sup><a href="#s-idc">7</a></sup></p>
       </div>
-      <div class="stage">
-        <div class="step">Stage 2</div>
-        <h4>Clean</h4>
-        <p>Coordinate validation, timestamp parsing, derived cloud-cover percentage. Module: <code>clean.py</code>.</p>
+      <div>
+        <h3>Capacity</h3>
+        <p>The growth in revenue is being matched, perhaps for the first time in the cloud era, by an equally striking growth in committed capital expenditure. The leading providers have signalled aggregate spending of several hundred billion dollars on data centres, accelerators, and power in 2026, which will reshape the supply side as much as artificial intelligence is reshaping the demand side. The pace of that build, and how much of it converts into productive revenue, is the principal question for the year ahead.</p>
       </div>
-      <div class="stage">
-        <div class="step">Stage 3</div>
-        <h4>Persist</h4>
-        <p>Tidy, analysis-ready columns written to Parquet for fast notebook reads. Output: <code>data/processed/</code>.</p>
-      </div>
-      <div class="stage">
-        <div class="step">Stage 4</div>
-        <h4>Analyse</h4>
-        <p>Descriptive and inferential statistics, mapped via Plotly and Folium. Module: <code>analysis.py</code>.</p>
-      </div>
-      <div class="stage">
-        <div class="step">Stage 5</div>
-        <h4>Explore</h4>
-        <p>Streamlit dashboard with filters, maps, charts, export. Entry point: <code>app/streamlit_app.py</code>.</p>
-      </div>
-    </div>
-
-    <h3>Quality filters</h3>
-    <ul>
-      <li>Rows missing latitude or longitude are dropped.</li>
-      <li>Coordinates outside −90 to 90 latitude or −180 to 180 longitude are dropped.</li>
-      <li>Rows without a valid timestamp are dropped.</li>
-      <li>Cloud cover percentage is inferred from sky condition where missing — Clear&nbsp;0%, Few&nbsp;15%, Scattered&nbsp;40%, Broken&nbsp;70%, Overcast&nbsp;95%, Obscured&nbsp;100%.</li>
-    </ul>
-
-    <h3>Schema of the cleaned record</h3>
-    <div class="tbl-wrap">
-      <table>
-        <caption>Table 2 · Columns produced by <code>clean.py</code></caption>
-        <thead>
-          <tr><th>Column</th><th>Type</th><th>Description</th></tr>
-        </thead>
-        <tbody>
-          <tr><td><code>pid</code></td>             <td>string</td><td>Stable observation identifier</td></tr>
-          <tr><td><code>measuredDate</code></td>    <td>datetime, UTC</td><td>Time of the observation</td></tr>
-          <tr><td><code>latitude</code></td>        <td>float, °N</td><td>Validated to [−90, 90]</td></tr>
-          <tr><td><code>longitude</code></td>       <td>float, °E</td><td>Validated to [−180, 180]</td></tr>
-          <tr><td><code>countryName</code></td>     <td>string</td><td>Reverse-geocoded by the GLOBE Program</td></tr>
-          <tr><td><code>skyCondition</code></td>    <td>category</td><td>Clear, Few, Scattered, Broken, Overcast, Obscured</td></tr>
-          <tr><td><code>cloudType</code></td>       <td>category</td><td>WMO genus reported by the observer</td></tr>
-          <tr><td><code>cloudOpacity</code></td>    <td>category</td><td>Transparent, Thin, Opaque</td></tr>
-          <tr><td><code>surfaceCondition</code></td><td>category</td><td>Reported ground state at the site</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <h3>Provenance</h3>
-    <div class="tbl-wrap">
-      <table>
-        <caption>Table 3 · Source and citation</caption>
-        <tbody>
-          <tr><td>Protocol</td>     <td><a href="https://www.globe.gov/web/atmosphere/protocols/clouds">GLOBE Clouds (sky_conditions)</a></td></tr>
-          <tr><td>Date range</td>   <td>15 January – 15 February 2022</td></tr>
-          <tr><td>Campaign</td>     <td><a href="https://observer.globe.gov/do-globe-observer/challenges/cloudchallenge-2022">NASA GLOBE Cloud Challenge 2022</a></td></tr>
-          <tr><td>API endpoint</td> <td><code>api.globe.gov/search/v1/measurement/protocol/measureddate</code></td></tr>
-          <tr><td>Format</td>       <td>GeoJSON, chunked weekly to respect the one-million-record API limit</td></tr>
-          <tr><td>Citation</td>     <td>Global Learning and Observations to Benefit the Environment (GLOBE) Program, <em>date data was accessed</em>, globe.gov</td></tr>
-        </tbody>
-      </table>
     </div>
 
     <div class="callout">
-      <div class="label">Ethics note on location privacy</div>
-      <p>Coordinates are publicly available under the GLOBE Program’s open-data policy. Even so, sensitive inference about individual observers — particularly at high spatial resolution — is discouraged. The dashboard clusters points to the regional scale by default for this reason.</p>
+      <div class="label">A note on uncertainty</div>
+      <p>Forecasts in this field are subject to revision as analyst firms reweight currency translation, redefine segment boundaries, and revise prior quarters. The figures above were correct as of their published dates and are linked to their sources for verification. Where this page paraphrases analyst forecasts, the originating source is named in the body and listed below; where it reports company results, the relevant filing or release is linked.</p>
     </div>
+  </div>
+</section>
 
-    <h3>Reproducing the figures on this page</h3>
-<pre><code>git clone https://github.com/ruddro-roy/globe-cloud-insights
-cd globe-cloud-insights
-pip install -e ".[dev,notebooks]"
+<!-- ============== V. SOURCES ============== -->
+<section id="sources">
+  <div class="wrap">
+    <h2><span class="num">Section V</span>Sources</h2>
+    <p class="lede">Primary disclosures and analyst reports referenced in the body of this page.</p>
 
-pytest tests/ -v
-streamlit run app/streamlit_app.py</code></pre>
+    <ol class="sources">
+      <li id="s-synergy"><strong>Synergy Research Group.</strong> Cloud market shows no sign of slowing, with Q4 revenues up by thirty percent. <a href="https://www.srgresearch.com/articles/cloud-market-shows-no-sign-of-slowing-with-q4-revenues-up-by-30">srgresearch.com</a>. Quarterly tracker covering infrastructure as a service, platform as a service, and hosted private cloud. Q4 2025 worldwide revenue $119.1 billion; full year 2025 $419 billion; Q4 share Amazon 28%, Microsoft 21%, Google 14%, top three 68%.</li>
 
-    <h3>Citation of this work</h3>
-<pre><code>@software{globe_cloud_insights_2024,
-  author    = {Roy, Ruddro},
-  title     = {GLOBE Cloud Insights: Interactive Visualization of NASA
-               GLOBE Observer Clouds 2022 Challenge Data},
-  year      = {2024},
-  publisher = {GitHub},
-  url       = {https://github.com/ruddro-roy/globe-cloud-insights},
-  license   = {MIT}
-}</code></pre>
+      <li id="s-amazon"><strong>Amazon.com, Inc.</strong> Annual Report on Form 10-K and quarterly press releases, fiscal year 2025. <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001018724&type=10-K">SEC EDGAR filings</a>. AWS segment sales $35.6 billion in Q4 2025 and $128.7 billion for full year 2025, up 24% and 20% year over year; segment operating income $45.6 billion for full year 2025.</li>
 
-    <div class="ornament">· · ·</div>
+      <li id="s-msft"><strong>Microsoft Corporation.</strong> Fiscal year 2025 Annual Report and Shareholders Meeting 2025. <a href="https://www.microsoft.com/en-us/Investor/annual-reports.aspx">microsoft.com investor relations, annual reports</a>; <a href="https://www.microsoft.com/en-us/Investor/events/FY-2025/Shareholders-Meeting-2025.aspx">FY2025 Shareholders Meeting</a>. Azure surpassed $75 billion in annual revenue, up 34% year over year. Microsoft Cloud, the broader aggregate, surpassed $168 billion, up 23%. Microsoft fiscal year ended June 2025.</li>
+
+      <li id="s-goog"><strong>Alphabet Inc.</strong> Quarterly press release and prepared remarks for Q4 2025. <a href="https://abc.xyz/investor/">abc.xyz investor</a>. Google Cloud revenue $17.7 billion in Q4 2025, up 48% year over year; cloud annualised run rate above $70 billion at year end; backlog up approximately 55% quarter over quarter to about $240 billion.</li>
+
+      <li id="s-oracle"><strong>Oracle Corporation.</strong> Investor relations, financial news archive, fiscal year 2025. <a href="https://investor.oracle.com/financial-news/default.aspx">investor.oracle.com</a>. Q4 cloud revenue, IaaS plus SaaS, $6.7 billion, up 27%; Q4 Cloud Infrastructure (IaaS) $3.0 billion, up 52%. Full year FY2025 Cloud Services and License Support $44.0 billion. Oracle fiscal year ended May 2025.</li>
+
+      <li id="s-baba"><strong>Alibaba Group Holding Limited.</strong> Quarterly results releases. <a href="https://www.alibabagroup.com/en-US/ir-financial-reports-quarterly-results">alibabagroup.com investor relations, quarterly results</a>. Cloud Intelligence Group: March 2025 quarter US$4.15 billion, up 18%; September 2025 quarter US$5.59 billion, up 34%; December 2025 quarter US$6.19 billion, up 36%; AI-related product revenue triple digit growth for consecutive quarters.</li>
+
+      <li id="s-idc"><strong>International Data Corporation.</strong> Worldwide public cloud spending forecast. <a href="https://my.idc.com/getdoc.jsp?containerId=prUS53674025">my.idc.com</a>. Total public cloud spending projected to surpass $1 trillion in 2026 and approximately double by 2029, with a compound annual growth rate above 21% over the forecast horizon.</li>
+
+      <li id="s-gartner"><strong>Gartner, Inc.</strong> Public cloud end-user spending forecast, as referenced in industry coverage of Gartner's published estimates. Public cloud end-user spending estimated near $595 billion in 2024 and forecast at approximately $723 billion in 2025, an increase of about 21.5%. The Gartner press release archive is the canonical source. <a href="https://www.gartner.com/en/newsroom">gartner.com newsroom</a>.</li>
+    </ol>
+
+    <p class="footnote">Compiled by Ruddro Roy from public filings and analyst releases. The accompanying repository, <a href="https://github.com/ruddro-roy/globe-cloud-insights">ruddro-roy / globe-cloud-insights</a>, holds the source of this page, the data tables behind the figures, and the build configuration used for publication. Released under the MIT License.</p>
   </div>
 </section>
 
@@ -389,28 +373,11 @@ streamlit run app/streamlit_app.py</code></pre>
 
 <footer class="colophon">
   <div class="wrap">
-    <div class="row">
-      <div>
-        <h5>Colophon</h5>
-        <p style="max-width:none">Set in Cormorant Garamond and EB Garamond, with JetBrains Mono for tabular and machine text. The companion site is hand-written HTML, CSS, and inline SVG, and is served by GitHub Pages from the <code>/docs</code> directory of the repository’s default branch. Every chart is computed at the time of publication from the bundled sample.</p>
-      </div>
-      <div>
-        <h5>Repository</h5>
-        <ul>
-          <li><a href="https://github.com/ruddro-roy/globe-cloud-insights">Source code</a></li>
-          <li><a href="https://github.com/ruddro-roy/globe-cloud-insights/blob/main/data/README.md">Data schema</a></li>
-          <li><a href="https://github.com/ruddro-roy/globe-cloud-insights/blob/main/CONTRIBUTING.md">Contributing</a></li>
-        </ul>
-      </div>
-      <div>
-        <h5>References</h5>
-        <ul>
-          <li><a href="https://observer.globe.gov/do-globe-observer/challenges/cloudchallenge-2022">Cloud Challenge 2022</a></li>
-          <li><a href="https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2020EA001175">Colon Robles et al., 2020</a></li>
-          <li><a href="https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2021EA002058">Dodson et al., 2022</a></li>
-        </ul>
-      </div>
+    <div class="colophon-meta">
+      <span>Globe Cloud Insights &nbsp;·&nbsp; A reading of the worldwide cloud computing market</span>
+      <span><a href="https://github.com/ruddro-roy/globe-cloud-insights">Repository</a></span>
     </div>
+    <div class="colophon-set">Set in Cormorant Garamond and EB Garamond. Figures rendered in inline SVG. Worldwide and quarterly figures throughout this page are nominal United States dollars.</div>
   </div>
 </footer>
 
