@@ -24,6 +24,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="assets/style.css">
+
+<link rel="preconnect" href="https://aladin.cds.unistra.fr" crossorigin>
+<link rel="preconnect" href="https://api.helioviewer.org" crossorigin>
+<link rel="preconnect" href="https://sdo.gsfc.nasa.gov" crossorigin>
+<link rel="stylesheet" href="https://aladin.cds.unistra.fr/AladinLite/api/v3/latest/aladin.min.css">
 </head>
 <body>
 
@@ -47,7 +52,8 @@
       <a href="#market"><span class="num">III</span>Market Size</a>
       <a href="#providers"><span class="num">IV</span>Providers</a>
       <a href="#outlook"><span class="num">V</span>Outlook</a>
-      <a href="#sources"><span class="num">VI</span>Sources</a>
+      <a href="#observatory"><span class="num">VI</span>Live Observatory</a>
+      <a href="#sources"><span class="num">VII</span>Sources</a>
     </nav>
   </div>
 </header>
@@ -557,10 +563,85 @@
   </div>
 </section>
 
-<!-- ============== VI. SOURCES ============== -->
+<!-- ============== VI. LIVE OBSERVATORY ============== -->
+<section id="observatory">
+  <div class="wrap">
+    <h2><span class="num">Section VI</span>Live Observatory</h2>
+    <p class="lede">A working window onto the same sky the GLOBE volunteers stood under, drawn from open astronomical surveys and from near-real-time solar imagery published by NASA.</p>
+
+    <p>The two panels below are live. The first is an interactive sky atlas that pulls deep-survey imagery and catalogue overlays on demand from the Centre de Données astronomiques de Strasbourg through <a href="https://aladin.cds.unistra.fr/AladinLite/doc/">Aladin Lite</a>. The second is a near-real-time view of the Sun, assembled from <a href="https://api.helioviewer.org/docs/v1/">Helioviewer Project</a> public-API screenshots of NASA Solar Dynamics Observatory imagery, with a NASA SDO mirror used as a graceful fallback when the Helioviewer endpoint cannot be reached. Both panels are read-only embeds. No telemetry is collected by this page.</p>
+
+    <h3>Sky atlas</h3>
+    <p class="obs-help">Pan with the cursor, zoom with the scroll wheel, search a target by name or coordinates, and switch between optical, infrared, and survey overlays. The default view is centred on the Pleiades open cluster.</p>
+    <div class="obs-toolbar" role="group" aria-label="Sky atlas controls">
+      <label class="obs-field">
+        <span>Survey</span>
+        <select id="aladin-survey" aria-label="Survey selector">
+          <option value="P/DSS2/color">DSS2 colour, optical</option>
+          <option value="P/2MASS/color">2MASS, near-infrared</option>
+          <option value="P/DSS2/red">DSS2 red</option>
+          <option value="P/Mellinger/color">Mellinger, optical mosaic</option>
+        </select>
+      </label>
+      <label class="obs-field obs-field-grow">
+        <span>Target</span>
+        <input id="aladin-target" type="text" placeholder="M45, NGC 224, 05 34 31.94 +22 00 52.2" aria-label="Target name or coordinates">
+      </label>
+      <button class="obs-btn" type="button" id="aladin-go">Go</button>
+      <span class="obs-status" id="aladin-status" aria-live="polite">Loading sky atlas&hellip;</span>
+    </div>
+    <div id="aladin-lite-div" class="obs-aladin" role="img" aria-label="Interactive sky atlas, Aladin Lite"></div>
+    <p class="obs-attribution">Sky imagery and catalogue access courtesy of <a href="https://aladin.cds.unistra.fr/AladinLite/">Aladin Lite</a>, Centre de Données astronomiques de Strasbourg. The Aladin logo and link are preserved at the bottom right of the view, as required by the Aladin Lite terms of use.</p>
+
+    <h3>Solar window</h3>
+    <p class="obs-help">A near-real-time image of the Sun, refreshed on demand from the Helioviewer Project public API of NASA SDO data. The Solar Dynamics Observatory images the Sun every twelve seconds in multiple ultraviolet wavelengths; the Helioviewer pipeline typically lags the live spacecraft feed by minutes to hours, depending on dataset and reprocessing.</p>
+    <div class="obs-toolbar" role="group" aria-label="Solar window controls">
+      <label class="obs-field">
+        <span>Wavelength</span>
+        <select id="sun-wavelength" aria-label="Wavelength selector">
+          <option value="13" data-label="AIA 304 &Aring;, chromosphere and transition region" data-color="warm">SDO AIA 304 &Aring;</option>
+          <option value="10" data-label="AIA 171 &Aring;, quiet corona">SDO AIA 171 &Aring;</option>
+          <option value="11" data-label="AIA 193 &Aring;, corona and hotter flare plasma">SDO AIA 193 &Aring;</option>
+          <option value="12" data-label="AIA 211 &Aring;, active region corona">SDO AIA 211 &Aring;</option>
+          <option value="9"  data-label="AIA 131 &Aring;, flaring regions">SDO AIA 131 &Aring;</option>
+          <option value="15" data-label="AIA 1600 &Aring;, upper photosphere and transition region">SDO AIA 1600 &Aring;</option>
+          <option value="18" data-label="HMI continuum, photosphere">SDO HMI continuum</option>
+          <option value="19" data-label="HMI magnetogram, line-of-sight magnetic field">SDO HMI magnetogram</option>
+        </select>
+      </label>
+      <button class="obs-btn" type="button" id="sun-refresh">Refresh</button>
+      <span class="obs-status" id="sun-status" aria-live="polite">Requesting latest image&hellip;</span>
+    </div>
+    <figure class="obs-sun">
+      <div class="obs-sun-frame">
+        <img id="sun-image" alt="Latest available SDO image of the Sun" decoding="async" />
+        <div class="obs-sun-overlay" id="sun-overlay" hidden>
+          <span>Loading near-real-time image</span>
+        </div>
+      </div>
+      <figcaption class="chart-caption">
+        <span class="num">Live</span>
+        <span id="sun-caption">Solar Dynamics Observatory, near-real-time imagery via the Helioviewer Project public API.</span>
+        <br>
+        <span class="obs-meta">
+          <strong>Source</strong> <span id="sun-source">Helioviewer Project &middot; NASA SDO</span>
+          &nbsp;&middot;&nbsp; <strong>Acquired (UTC)</strong> <span id="sun-acquired">&mdash;</span>
+          &nbsp;&middot;&nbsp; <strong>Loaded (UTC)</strong> <span id="sun-loaded">&mdash;</span>
+        </span>
+      </figcaption>
+    </figure>
+
+    <div class="callout">
+      <div class="label">Source notes and terms</div>
+      <p>Sky-atlas imagery is rendered by Aladin Lite, an open-source software package distributed by the Centre de Données astronomiques de Strasbourg, and is embedded here under the Aladin Lite terms of use. The Aladin logo and link, which the terms require to remain visible, sit at the bottom right of the atlas view above. Solar imagery is requested from the Helioviewer Project public API, which exposes NASA Solar Dynamics Observatory data products to scientists, educators, developers, and the general public. Where the Helioviewer endpoint cannot be reached from a reader's browser, the panel falls back to the publicly mirrored <em>latest</em> image at <a href="https://sdo.gsfc.nasa.gov/data/">sdo.gsfc.nasa.gov</a>; the timestamp shown is the time of fetch, and the wavelength label names the dataset. Use of NASA imagery for educational and public visualization is permitted; this page implies no NASA endorsement and is not affiliated with NASA, the SDO mission, or the Helioviewer Project.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============== VII. SOURCES ============== -->
 <section id="sources">
   <div class="wrap">
-    <h2><span class="num">Section VI</span>Sources</h2>
+    <h2><span class="num">Section VII</span>Sources</h2>
     <p class="lede">Primary disclosures, NASA and GLOBE Program references, and analyst reports cited in the body of this page.</p>
 
     <ol class="sources">
@@ -593,6 +674,12 @@
       <li id="s-repo-data"><strong>Repository data, this project.</strong> The committed sample dataset and pipeline code. Sample CSV at <a href="https://github.com/ruddro-roy/globe-cloud-insights/blob/main/data/raw/globe_clouds_2022.csv">data/raw/globe_clouds_2022.csv</a>, cleaned parquet at <a href="https://github.com/ruddro-roy/globe-cloud-insights/blob/main/data/processed/globe_clouds_2022_clean.parquet">data/processed/globe_clouds_2022_clean.parquet</a>, schema and quality filters at <a href="https://github.com/ruddro-roy/globe-cloud-insights/blob/main/data/README.md">data/README.md</a>, cleaning logic at <a href="https://github.com/ruddro-roy/globe-cloud-insights/blob/main/src/globe_cloud_insights/clean.py">src/globe_cloud_insights/clean.py</a>. The figures named in Section II were computed directly from the parquet sample, namely 500 rows after quality filters, sky-condition counts of Broken 97, Clear 90, Obscured 86, Scattered 77, Overcast 75, Few 75, cloud-genera counts of Stratocumulus 95, Altocumulus 91, Cumulonimbus 88, Stratus 82, Cumulus 75, Cirrus 69, opacity counts of Transparent 173, Thin 167, Opaque 160, and surface-condition counts of Snow 138, Dry 136, Ice 116, Wet 110.</li>
 
       <li id="s-globe-cite"><strong>GLOBE Program citation, atmospheric data.</strong> Global Learning and Observations to Benefit the Environment (GLOBE) Program. <a href="https://www.globe.gov">globe.gov</a>. The repository follows the GLOBE Program's recommended citation for any reuse of the cloud observation data.</li>
+
+      <li id="s-aladin"><strong>Aladin Lite, Centre de Données astronomiques de Strasbourg.</strong> Interactive sky atlas embedded in Section VI. <a href="https://aladin.cds.unistra.fr/AladinLite/doc/">aladin.cds.unistra.fr, Aladin Lite documentation</a>. Used under the Aladin Lite terms of use; the Aladin logo and link are preserved at the bottom right of the embedded view, as required.</li>
+
+      <li id="s-helioviewer"><strong>Helioviewer Project public API.</strong> Near-real-time solar imagery exposed in Section VI. <a href="https://api.helioviewer.org/docs/v1/">api.helioviewer.org, API v1 documentation</a>. The Helioviewer Project is a partnership project that maintains public APIs to broaden access to solar and heliospheric datasets, including those produced by the NASA Solar Dynamics Observatory.</li>
+
+      <li id="s-sdo"><strong>NASA Solar Dynamics Observatory.</strong> Source of the underlying solar imagery and the fallback <em>latest</em> images at <a href="https://sdo.gsfc.nasa.gov/data/">sdo.gsfc.nasa.gov</a>. Per <a href="https://svs.gsfc.nasa.gov/">NASA Scientific Visualization Studio</a>, SDO images the Sun every twelve seconds in multiple ultraviolet wavelengths. NASA imagery is used here for public educational visualization; no endorsement is implied.</li>
     </ol>
 
     <p class="footnote">Compiled by Ruddro Roy from public filings, analyst releases, NASA materials, and the GLOBE Program. The accompanying repository, <a href="https://github.com/ruddro-roy/globe-cloud-insights">ruddro-roy / globe-cloud-insights</a>, holds the source of this page, the cleaning and analysis code behind the Section II figures, the Streamlit dashboard, and the build configuration used for publication. Released under the MIT License.</p>
@@ -611,5 +698,7 @@
   </div>
 </footer>
 
+<script type="text/javascript" src="https://aladin.cds.unistra.fr/AladinLite/api/v3/latest/aladin.js" charset="utf-8"></script>
+<script src="assets/observatory.js" defer></script>
 </body>
 </html>
