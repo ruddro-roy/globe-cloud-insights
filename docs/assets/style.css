@@ -546,3 +546,174 @@ section#outlook .cols-2 { grid-template-columns: 1fr 1fr; }
   section#providers .cols-2,
   section#outlook .cols-2 { grid-template-columns: 1fr; }
 }
+
+/* ---------- live observatory ---------- */
+section#observatory h3 { margin-top: 2.4rem; }
+section#observatory h3:first-of-type { margin-top: 1.6rem; }
+
+.obs-help {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  max-width: 54rem;
+}
+
+.obs-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem 1rem;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 0.85rem 0;
+  margin: 1rem 0 0.75rem;
+}
+.obs-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.obs-field-grow { flex: 1 1 18rem; }
+.obs-field span { color: var(--accent); }
+.obs-field select,
+.obs-field input {
+  font-family: var(--serif-body);
+  font-size: 1rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 0.5rem 0.65rem;
+  min-height: 2.4rem;
+  width: 100%;
+}
+.obs-field select:focus,
+.obs-field input:focus,
+.obs-btn:focus {
+  outline: 2px solid var(--c-2);
+  outline-offset: 1px;
+}
+
+.obs-btn {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  padding: 0.6rem 1.1rem;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.15s ease, color 0.15s ease;
+  min-height: 2.4rem;
+}
+.obs-btn:hover { background: var(--c-1); border-color: var(--c-1); }
+.obs-btn[disabled] { opacity: 0.55; cursor: progress; }
+
+.obs-status {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: var(--ink-soft);
+  min-height: 1.1rem;
+  flex: 1 1 100%;
+  text-align: right;
+}
+.obs-status.is-error { color: var(--c-5); }
+.obs-status.is-ready { color: var(--c-4); }
+
+.obs-aladin {
+  width: 100%;
+  height: 540px;
+  border: 1px solid var(--rule);
+  background: var(--paper-soft);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+@media (max-width: 720px) { .obs-aladin { height: 420px; } }
+
+.obs-attribution {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin-top: 0.6rem;
+  max-width: 54rem;
+}
+
+.obs-sun {
+  margin: 1rem 0 1.25rem;
+  border-top: 1px solid var(--rule);
+  padding-top: 1.25rem;
+}
+.obs-sun-frame {
+  position: relative;
+  background: #1a140d;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  aspect-ratio: 1 / 1;
+  max-width: 640px;
+  margin: 0 auto;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.obs-sun-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  transition: opacity 0.25s ease;
+}
+.obs-sun-frame img.is-loading { opacity: 0.4; }
+.obs-sun-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(26, 20, 13, 0.55);
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.obs-sun figcaption {
+  text-align: left;
+  font-style: normal;
+  margin-top: 0.7rem;
+}
+.obs-sun figcaption .num {
+  font-style: normal;
+  color: var(--accent);
+}
+.obs-meta {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  display: inline-block;
+  margin-top: 0.3rem;
+}
+.obs-meta strong {
+  color: var(--ink);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 0.68rem;
+}
+
+@media (max-width: 540px) {
+  .obs-toolbar { flex-direction: column; align-items: stretch; }
+  .obs-status { text-align: left; }
+  .obs-btn { width: 100%; }
+}
